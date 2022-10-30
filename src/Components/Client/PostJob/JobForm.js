@@ -92,8 +92,6 @@ function JobForm() {
           <div
             style={{
               maxWidth: "1100px",
-              margin: "50px 20px 0 20px ",
-              padding: "20px",
               paddingTop: "30px",
               borderRadius: "20px",
             }}

@@ -99,7 +99,7 @@ function CandidateONboarding() {
   return (
     <div
       style={{
-        backgroundColor: "#EDEBEE",
+        backgroundColor: "#e5e5e5",
         minHeight: "100vh",
         paddingTop: "50px",
       }}
@@ -108,9 +108,9 @@ function CandidateONboarding() {
         <div
           style={{
             maxWidth: "1100px",
-            margin: "auto",
+            margin: "50px 20px 0 20px ",
             padding: "20px",
-            paddingTop: "40px",
+            paddingTop: "50px",
             borderRadius: "20px",
           }}
         >

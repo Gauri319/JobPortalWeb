@@ -103,6 +103,7 @@ export default function Headers() {
             display: "flex",
             flexDirection: { xs: "column", md: "row" },
             alignItems: "center",
+            marginBlock: "20px",
           }}
         >
           <Grid item xs={12} md={5}>

@@ -95,7 +95,7 @@ function ClientProfile() {
             <Grid item xs={12} md={6}>
               <label>email*</label>
               <TextField
-              disabled={!editState}
+                disabled={true}
                 required
                 type="email"
                 value={clientData.email}

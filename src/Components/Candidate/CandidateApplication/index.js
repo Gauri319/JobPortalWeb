@@ -17,7 +17,7 @@ function CandidateApplication() {
       let applications = [];
       querySnapshot.forEach((doc) => {
         applications.push(doc.data());
-        console.log(applications);
+
       });
       setAllApplications(applications);
     } catch (err) {

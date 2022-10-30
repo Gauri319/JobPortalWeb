@@ -25,7 +25,6 @@ function CLientApplicants() {
       let applications = [];
       querySnapshot.forEach((doc) => {
         applications.push(doc.data());
-        console.log(applications);
       });
       setAllApplications(applications);
     } catch (err) {
@@ -38,7 +37,7 @@ function CLientApplicants() {
   }, []);
 
   const handleAction = async (action, Applicationdata) => {
-    console.log(action, Applicationdata);
+
     if (action === "reject") {
       try {
         await deleteDoc(
@@ -81,6 +80,19 @@ function CLientApplicants() {
           },
           { merge: true }
         );
+        const changedData = [];
+
+        applications.forEach((application) => {
+          if (application.application_id === Applicationdata.application_id) {
+            let temp = { ...application,interest_showen:'accepted' };
+            changedData.push(temp);
+          }
+          else{
+          changedData.push(application);
+          }
+        });
+        console.log(changedData)
+        setAllApplications(changedData)
       } catch (err) {
         console.log(err);
       }

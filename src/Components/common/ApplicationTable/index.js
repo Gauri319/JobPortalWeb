@@ -42,7 +42,7 @@ const Date = (date) => {
   const filteredYear = dateArray[3];
   return `${filteredDay} ${filteredMonth} ${filteredDate} ${filteredYear}`;
 };
-function ApplicationTable({ columns, rows, buttons,handleAction }) {
+function ApplicationTable({ columns, rows, buttons, handleAction }) {
   return (
     <TableContainer component={Paper}>
       <Table sx={{ minWidth: 700 }} aria-label="customized table">
@@ -58,6 +58,7 @@ function ApplicationTable({ columns, rows, buttons,handleAction }) {
           {rows.map((row) => (
             <StyledTableRow key={row.application_id}>
               {columns.map((column) => {
+                console.log(column.key);
                 return (
                   <StyledTableCell align="left">
                     {column.key === "createdAt"
@@ -67,19 +68,27 @@ function ApplicationTable({ columns, rows, buttons,handleAction }) {
                 );
               })}
               {buttons && (
-                <StyledTableCell align="left">
+                <StyledTableCell
+                  sx={{
+                    opacity:
+                      row["interest_showen"] === "accepted" ? "0.5" : "1",
+                    pointerEvents:
+                      row["interest_showen"] === "accepted" ? "none" : "unset",
+                  }}
+                  align="left"
+                >
                   <Button
                     sx={{
                       backgroundColor: "green",
                       color: "#fff",
                       marginRight: "10px",
                     }}
-                    onClick={() => handleAction('accept',row)}
+                    onClick={() => handleAction("accept", row)}
                   >
                     Accept
                   </Button>
                   <Button
-                    onClick={() => handleAction('reject',row)}
+                    onClick={() => handleAction("reject", row)}
                     sx={{
                       backgroundColor: "#f50057",
                       color: "#fff",

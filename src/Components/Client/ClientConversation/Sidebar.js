@@ -3,11 +3,12 @@ import React, { useEffect } from "react";
 function Sidebar({
   getAllConversation,
   allConversations,
+  setConversationMobileSidebar,
   setSelectedConversation,
 }) {
   useEffect(() => {
-    const unsubscribe = getAllConversation();
-    return unsubscribe;
+     getAllConversation();
+
   }, []);
   return (
     <div>
@@ -18,7 +19,7 @@ function Sidebar({
           {allConversations.map((conversation) => {
             return (
               <div
-                onClick={() => setSelectedConversation(conversation)}
+                onClick={() => {setSelectedConversation(conversation);setConversationMobileSidebar(false)}}
                 style={{ border: "1px solid", padding: "10px" }}
               >
                 <div>{conversation.candidate_name || "name"}</div>

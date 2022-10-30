@@ -16,7 +16,7 @@ import Logo from "../../../assets/Slogo.png";
 import { textTransform } from "@mui/system";
 import {useNavigate } from "react-router-dom";
 
-const pages = ["Home", "Find Clients", "Find Candidates", "Articles"];
+const pages = ["Home", "Clients login", "Candidates login", "Articles"];
 
 const settings = ["Profile", "Account", "Dashboard", "Logout"];
 
@@ -48,9 +48,9 @@ const Navbar = () => {
   };
 
   const handleNavBtnClick = (page) => {
-    if (page.toLowerCase() === "find clients") {
+    if (page.toLowerCase() === "clients login") {
       goToClientSignIn();
-    } else if (page.toLowerCase() === "find candidates") {
+    } else if (page.toLowerCase() === "candidates login") {
       goToCandidateSignIn();
     }
   };
@@ -105,7 +105,7 @@ const Navbar = () => {
               }}
             >
               {pages.map((page) => (
-                <MenuItem key={page} onClick={handleCloseNavMenu}>
+                <MenuItem key={page} onClick={() => handleNavBtnClick(page)}>
                   <Typography textAlign="center" textTransform="none" >{page} </Typography>
                 </MenuItem>
               ))}

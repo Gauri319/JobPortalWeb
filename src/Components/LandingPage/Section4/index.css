@@ -16,9 +16,10 @@
 }
 
 .sub-main {
-    /* display: flex; */
+    display: flex;
+    flex-direction: column;
     width: 90%;
-    flex-direction: row;
+    grid-gap: 10px;
 }
 
 .main-text {
@@ -54,8 +55,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    margin-bottom: 20px;
-    left: 50%;
+    margin-bottom: 10px;
     /* -ms-transform: translate(50%, 50%); */
     transform: translate(25%, -15%);
 }

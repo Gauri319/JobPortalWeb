@@ -54,7 +54,7 @@ function MessageArea({
           <form
             style={{
               position: "sticky",
-              bottom: "0",
+              bottom: "50px",
               width: "100%",
               background: "white",
             }}
@@ -64,7 +64,9 @@ function MessageArea({
             }}
           >
             <Grid
-            sx={{paddingBottom: "10px"}}
+            sx={{paddingBottom: "10px",
+          alignItems: "center",
+          }}
             container spacing={2}>
               <Grid item xs={9}>
                 <TextField

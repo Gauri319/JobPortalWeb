@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 
 function CandidateConversationSideBar({
   candidateConversation,
+  setConversationMobileSidebar,
   allConversations,
   setSelectedConversation,
 }) {
@@ -20,7 +21,7 @@ function CandidateConversationSideBar({
           {allConversations.map((conversation) => {
             return (
               <div
-              onClick={() => setSelectedConversation(conversation)}
+              onClick={() => {setSelectedConversation(conversation);setConversationMobileSidebar(false)}}
               style={{border:"1px solid black",margin:"10px",padding:"5px"}}
               >
                 <div>{conversation.client_name}</div>

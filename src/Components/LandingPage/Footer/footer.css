@@ -11,11 +11,11 @@
 }
  
 .section-51 h3{
-    margin-left: 72px;
+    /* margin-left: 72px; */
     font-family: 'Roboto';
-    font-size: 50px;
+    font-size: 30px;
     font-weight: 400;
-    line-height: 59px;
+    line-height: 29px;
 }
 h3 span{
     color: #4540DB;
@@ -38,6 +38,7 @@ input:focus{
     border: none;
     color: white;
     margin-right: 6px;
+    
 }
 .newsletter{
     display: flex;
@@ -88,7 +89,7 @@ hr {width:100%;}
   }
   @media screen and (max-width: 1000px) {
     .section-51 h3{
-        font-size: 35px;
+        font-size: 25px;
         margin: 1rem auto;
     }
   }
