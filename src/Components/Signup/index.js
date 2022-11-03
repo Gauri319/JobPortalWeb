@@ -1,13 +1,17 @@
 import React from "react";
 import { signInWithPopup, GoogleAuthProvider } from "firebase/auth";
-import sideImage from "./images/sideImage.png";
-import Authentication from "./images/authentication.png";
 import "./index.css";
 import { useNavigate } from "react-router-dom";
-import { ReactComponent as Google } from "./Google.svg";
 import { auth } from "../../config/firebaseInitisize";
 import { getDoc, doc } from "firebase/firestore";
 import { db } from "../../config/firebaseInitisize";
+import Box from '@mui/material/Box';
+import Grid from '@mui/material/Grid';
+import Button from '@mui/material/Button';
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import GoogleIcon from '@mui/icons-material/Google';
+import background from "./images/background.png"
+
 function Signup({ type }) {
   let navigate = useNavigate();
   const provider = new GoogleAuthProvider();
@@ -23,21 +27,27 @@ function Signup({ type }) {
           "user",
           JSON.stringify({ ...user, userInfo: { ...constDocData } })
         ); //store in Local storage
-        localStorage.setItem("token", token);
 
         if (constDocData.step === 2) {
           if (type === "client") {
-            if(constDocData.user_type==='candidate'){
-              alert('You are not allowed to login as client')
-              return
+            if (constDocData.user_type === "candidate") {
+              alert("You are not allowed to login as client");
+              return;
+            } else {
+              setTimeout(() => {
+                navigate("/client/profile");
+              }, 2000);
+             
             }
-            navigate("/client/profile");
           } else {
-            if(constDocData.user_type==='client'){
-              alert('You are not allowed to login as candidate')
-              return
+            if (constDocData.user_type === "client") {
+              alert("You are not allowed to login as candidate");
+              return;
+            } else {
+            setTimeout(() => {
+              navigate("/candidate/profile");
+            }, 2000);
             }
-            navigate("/candidate/profile");
           }
         } else {
           if (type === "client") {
@@ -47,6 +57,11 @@ function Signup({ type }) {
           }
         }
       } else {
+        if (type === "client") {
+          navigate("/onboarding/client");
+        } else {
+          navigate("/onboarding/candidate");
+        }
         // doc.data() will be undefined in this case
         console.log("No such document!");
       }
@@ -65,64 +80,71 @@ function Signup({ type }) {
         // The signed-in user info.
         const user = result.user;
         console.log(user, "token", token);
-        const userInfo = getProfile({ userId: user.uid, token, user, type });
+        localStorage.setItem("user", JSON.stringify(user)); //store in Local storage
+        localStorage.setItem("token", token); //store in Local storage
+        getProfile({ userId: user.uid, token, user, type });
 
         // ...
       })
       .catch((error) => {
         alert("error");
         // Handle Errors here.
-        const errorCode = error.code;
-        const errorMessage = error.message;
-        // The email of the user's account used.
-        const email = error.customData.email;
+        // const errorCode = error.code;
+        // const errorMessage = error.message;
+        // // The email of the user's account used.
+        // const email = error.customData.email;
         // The AuthCredential type that was used.
-        const credential = GoogleAuthProvider.credentialFromError(error);
+        GoogleAuthProvider.credentialFromError(error);
         // ...
       });
   };
   return (
-    <div className="wrapper-container">
-      <div className="side-image-container">
-        <img src={sideImage} alt="Girl"></img>
+    <div className="wrapper-container" >
+      <div className="image-container"> 
+        <img src={background} alt="sideImage"/>    
       </div>
-      <div className="signin-container">
-        <h2>
-          Welcome <span>{type}</span>
-        </h2>
-        <img src={Authentication} alt="auth"></img>
-        <h1>Sign IN</h1>
-        <button onClick={signIn}>
-          <span>
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 48 48"
-              width="48px"
-              height="48px"
-            >
-              <path
-                fill="#FFC107"
-                d="M43.611,20.083H42V20H24v8h11.303c-1.649,4.657-6.08,8-11.303,8c-6.627,0-12-5.373-12-12c0-6.627,5.373-12,12-12c3.059,0,5.842,1.154,7.961,3.039l5.657-5.657C34.046,6.053,29.268,4,24,4C12.955,4,4,12.955,4,24c0,11.045,8.955,20,20,20c11.045,0,20-8.955,20-20C44,22.659,43.862,21.35,43.611,20.083z"
-              />
-              <path
-                fill="#FF3D00"
-                d="M6.306,14.691l6.571,4.819C14.655,15.108,18.961,12,24,12c3.059,0,5.842,1.154,7.961,3.039l5.657-5.657C34.046,6.053,29.268,4,24,4C16.318,4,9.656,8.337,6.306,14.691z"
-              />
-              <path
-                fill="#4CAF50"
-                d="M24,44c5.166,0,9.86-1.977,13.409-5.192l-6.19-5.238C29.211,35.091,26.715,36,24,36c-5.202,0-9.619-3.317-11.283-7.946l-6.522,5.025C9.505,39.556,16.227,44,24,44z"
-              />
-              <path
-                fill="#1976D2"
-                d="M43.611,20.083H42V20H24v8h11.303c-0.792,2.237-2.231,4.166-4.087,5.571c0.001-0.001,0.002-0.001,0.003-0.002l6.19,5.238C36.971,39.205,44,34,44,24C44,22.659,43.862,21.35,43.611,20.083z"
-              />
-            </svg>
-          </span>
-          Signup with Google
-        </button>
-      </div>
+      <Box
+        mt={2}
+        sx={{
+          boxShadow:3,
+          borderRadius: '16px',
+          padding:"90px 10px",
+          margin:"auto",
+          backgroundColor:"#F5F5F8",
+          width:{ lg: '60%', md:'75%',sm:'60%',xs:'85%'},
+          height:"600px"
+        }}
+      >
+        <Grid container direction="column"
+          justifyContent="center"
+          alignItems="center"
+          rowSpacing={6}
+          sx={
+            {
+              textAlign:"center",
+              width:"100%",
+          }
+          }
+          >
+          <Grid item xs={12}>
+            <h1>
+              Welcome <span>{type}</span>
+            </h1>
+          </Grid>
+          <Grid item xs={12}>
+            <AccountCircleIcon sx={{fontSize:"150px",color:"#8B8B8F"}}/>
+          </Grid>
+          <Grid item xs={12}>
+            <h1>Sign IN</h1>
+          </Grid>
+          <Grid item xs={12}>
+               <Button onClick={signIn}  variant="contained" sx={{backgroundColor:"#6119EF",boxShadow:3, borderRadius: '16px'}}><GoogleIcon /> SignUp with Google</Button>
+          </Grid>
+        </Grid>
+
+      </Box>
     </div>
-  );
+    )
 }
 
 export default Signup;

@@ -76,12 +76,13 @@ function CandidateConversation() {
       <Grid
         item
         xs={12}
-        md={3}
+        md={5}
         sx={{
           display: {
             xs: conversationMobileSidebar ? "block" : "none",
             md: "block",
           },
+          borderRight:"0.5px solid rgb(137, 139, 140)"
         }}
       >
         <CandidateConversationSideBar
@@ -94,7 +95,7 @@ function CandidateConversation() {
       <Grid
         item
         xs={12}
-        md={9}
+        md={7}
         sx={{
           display: {
             xs: conversationMobileSidebar ? "none" : "block",

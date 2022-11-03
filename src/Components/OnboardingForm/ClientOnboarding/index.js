@@ -1,8 +1,8 @@
 import React from "react";
 import Container from "@mui/material/Container";
 import "./index.css";
-import { TextField, Grid, Box, Button } from "@mui/material";
-import { addDoc, setDoc, doc } from "firebase/firestore";
+import { TextField, Grid,Button } from "@mui/material";
+import { setDoc, doc } from "firebase/firestore";
 import { db } from "../../../config/firebaseInitisize";
 import { useNavigate } from "react-router-dom";
 
@@ -20,19 +20,28 @@ function ClientOnboarding() {
   });
 
   const submitInfo = async (e) => {
-    let userInfo = JSON.parse(localStorage.getItem("user"));
-    let userId = userInfo.uid;
+    let userData = JSON.parse(localStorage.getItem("user"));
+    let userId = userData.uid;
     e.preventDefault();
     console.log(clientInfo);
+    const finaInfo = {
+      ...clientInfo,
+      userId: userId,
+      step: 2,
+      user_type: "client",
+    };
     try {
-      const docRef = await setDoc(doc(db, "usersData", userId), {
-        ...clientInfo,
-        userId: userId,
-        step: 2,
-        user_type: "client",
+       await setDoc(doc(db, "usersData", userId), {
+        ...finaInfo,
       });
+      localStorage.setItem(
+        "user",
+        JSON.stringify({ ...userData, userInfo: { ...finaInfo } })
+      );
+        setTimeout(() => {
+          navigate("/client/profile");
+        }, 2000);
 
-      navigate("/client/profile");
     } catch (e) {
       alert("Error occored");
       console.error("Error adding document: ", e);

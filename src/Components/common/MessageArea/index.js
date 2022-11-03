@@ -27,7 +27,8 @@ function MessageArea({
     }
   };
   return (
-    <div>
+    <div style={{width:"fit-content",border:"1px solid red",position: "fixed",
+    bottom: "80px",maxHeight:"800px",overflow:"auto"}}>
       {selectedConversation && allMessages ? (
         <div>
           <div>
@@ -52,34 +53,32 @@ function MessageArea({
             })}
           </div>
           <form
-            style={{
-              position: "sticky",
-              bottom: "50px",
-              width: "100%",
-              background: "white",
-            }}
+             style={{position:"fixed",bottom:"0px"}}
             onSubmit={(e) => {
               e.preventDefault();
               onSendMessage(messagetext);
+              setMessage("");
             }}
           >
             <Grid
-            sx={{paddingBottom: "10px",
-          alignItems: "center",
-          }}
-            container spacing={2}>
+              sx={{
+                paddingBottom: "10px",
+                alignItems: "center",
+              }}
+              container spacing={2}>
               <Grid item xs={9}>
                 <TextField
                   onChange={(e) => setMessage(e.target.value)}
                   value={messagetext}
                   fullWidth
                   id="outlined-basic"
-                  label="Outlined"
+                  label="Your Message"
                   variant="outlined"
+                  size="small"
                 />
               </Grid>
               <Grid item xs={3}>
-                <Button variant="contained" type="submit">
+                <Button variant="contained" color="secondary" type="submit">
                   Send
                 </Button>
               </Grid>

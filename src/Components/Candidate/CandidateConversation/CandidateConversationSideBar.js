@@ -22,10 +22,10 @@ function CandidateConversationSideBar({
             return (
               <div
               onClick={() => {setSelectedConversation(conversation);setConversationMobileSidebar(false)}}
-              style={{border:"1px solid black",margin:"10px",padding:"5px"}}
+              style={{border:"0.5px solid rgb(137, 139, 140)", borderRadius:"25px",margin:"10px",padding:"10px"}}
               >
-                <div>{conversation.client_name}</div>
-                <div>{conversation.last_message}</div>
+                <div style={{color:"#740EB8"}}><h4>{conversation.client_name}</h4></div>
+                <div style={{marginLeft:"10px"}}><p>{conversation.last_message}</p></div>
               </div>
             );
           })}

@@ -24,6 +24,7 @@ function Navs() {
   const auth = localStorage.getItem("token");
   const userData = JSON.parse(localStorage.getItem("user"));
   console.log(userData, "userData");
+
   function PrivateRouteClient() {
     return auth && userData.userInfo.user_type === "client" ? (
       <Outlet />
@@ -47,13 +48,12 @@ function Navs() {
             path="/signIn/candidate"
             element={<Signup type={"candidate"} />}
           />
-
-          <Route path="/signIn/client" element={<Signup type={"client"} />} />
+          <Route
+            path="/onboarding/candidate"
+            element={<CandidateONboarding />}
+          />
+         
           <Route element={<PrivateRouteCandidate />}>
-            <Route
-              path="/onboarding/candidate"
-              element={<CandidateONboarding />}
-            />
             <Route
               path="/candidate/profile"
               element={
@@ -89,8 +89,9 @@ function Navs() {
               }
             />
           </Route>
+          <Route path="/signIn/client" element={<Signup type={"client"} />} />
+          <Route path="/onboarding/client" element={<ClientOnboarding />} />
           <Route element={<PrivateRouteClient />}>
-            <Route path="/onboarding/client" element={<ClientOnboarding />} />
             <Route
               path="/client/profile"
               element={

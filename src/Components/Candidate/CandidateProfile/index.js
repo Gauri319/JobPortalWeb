@@ -1,8 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { getDoc, doc, setDoc } from "firebase/firestore";
 import { db } from "../../../config/firebaseInitisize";
-import { TextField, Grid, Box, Button } from "@mui/material";
-import { Navigate, useNavigate } from "react-router-dom";
+import { TextField, Grid,Button } from "@mui/material";
+import {  useNavigate } from "react-router-dom";
+import Avatar from '@mui/material/Avatar';
+import EditIcon from '@mui/icons-material/Edit';
+import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 
 function CandidateProfile() {
   const [candidateData, setCandidateData] = useState(null);
@@ -59,17 +62,24 @@ function CandidateProfile() {
     <div>
       {candidateData ? (
         <div>
-          <Grid container spacing={8} justifyContent="center">
-            <Grid item xs={2} md={2}>
-              <Button onClick={saveProfile}>
-                {editState ? "save" : "Edit"}
-              </Button>
+          <Grid container  justifyContent="space-around" sx={{marginBottom:"30px"}}>
+            <Grid item xs={6} >
+                 <Avatar alt="Remy Sharp" src={user.photoURL} sx={{width:"150px",height:"150px"}} />
             </Grid>
-            <Grid item xs={2} md={2}>
-              <Button onClick={logoutProfile}>Logout</Button>
+            <Grid container xs={6} alignItems="flex-end" justifyContent="flex-end" columnSpacing={12} rowSpacing={4} >
+              <Grid item xs={12} sm={4} md={4} >
+                <Button  variant="contained" color="secondary" onClick={saveProfile}>
+                  {editState ? <>Save <AddCircleOutlineIcon/></> : <>Edit <EditIcon/></>}
+                </Button>
+              </Grid>
+              <Grid item xs={12} sm={4} md={4}>
+                <Button  variant="contained" color="secondary" onClick={logoutProfile}>Logout</Button>
+              </Grid>
+
             </Grid>
+
           </Grid>
-          <Grid container columnSpacing={2} rowSpacing={4}>
+          <Grid container columnSpacing={12} rowSpacing={4}>
             <Grid item xs={12} md={6}>
               <label>
                 Name<span style={{ color: "red" }}>*</span>
@@ -85,8 +95,8 @@ function CandidateProfile() {
                 }}
                 size="small"
                 fullWidth
-                id="outlined-basic"
-                variant="outlined"
+                id="standard-basic"
+                variant="standard"
               />
             </Grid>
             <Grid item xs={12} md={6}>
@@ -105,8 +115,8 @@ function CandidateProfile() {
                 }}
                 size="small"
                 fullWidth
-                id="outlined-basic"
-                variant="outlined"
+                id="standard-basic"
+                variant="standard"
               />
             </Grid>
 
@@ -127,8 +137,8 @@ function CandidateProfile() {
                 }}
                 size="small"
                 fullWidth
-                id="outlined-basic"
-                variant="outlined"
+                id="standard-basic"
+                variant="standard"
               />
             </Grid>
 
@@ -144,8 +154,8 @@ function CandidateProfile() {
                 }}
                 size="small"
                 fullWidth
-                id="outlined-basic"
-                variant="outlined"
+                id="standard-basic"
+                variant="standard"
               />
             </Grid>
 
@@ -161,8 +171,8 @@ function CandidateProfile() {
                 }}
                 size="small"
                 fullWidth
-                id="outlined-basic"
-                variant="outlined"
+                id="standard-basic"
+                variant="standard"
               />
             </Grid>
 
@@ -184,8 +194,8 @@ function CandidateProfile() {
                 }}
                 size="small"
                 fullWidth
-                id="outlined-basic"
-                variant="outlined"
+                id="standard-basic"
+                variant="standard"
               />
             </Grid>
             <Grid item xs={12} md={6}>
@@ -206,8 +216,8 @@ function CandidateProfile() {
                 }}
                 size="small"
                 fullWidth
-                id="outlined-basic"
-                variant="outlined"
+                id="standard-basic"
+                variant="standard"
               />
             </Grid>
 
@@ -226,8 +236,8 @@ function CandidateProfile() {
                 }}
                 size="small"
                 fullWidth
-                id="outlined-basic"
-                variant="outlined"
+                id="standard-basic"
+                variant="standard"
               />
             </Grid>
             <Grid item xs={12} md={6}>
@@ -248,66 +258,12 @@ function CandidateProfile() {
                 }}
                 size="small"
                 fullWidth
-                id="outlined-basic"
-                variant="outlined"
+                id="standard-basic"
+                variant="standard"
               />
             </Grid>
 
-            {/* <Grid item xs={12} md={6}>
-              <la>
-                Tags<span style={{ color: "red" }}>*</span>
-              </la>
-              <FormControl required sx={{ width: "100%" }}>
-                <InputLabel id="demo-multiple-checkbox-label">
-                  Select
-                </InputLabel>
-                <Select
-                  labelId="demo-multiple-checkbox-label"
-                  id="demo-multiple-checkbox"
-                  multiple
-                  value={candidateData.skills}
-                  onChange={handleSkillsChange}
-                  input={<OutlinedInput label="Tag" />}
-                  renderValue={(selected) => selected.join(", ")}
-                  MenuProps={MenuProps}
-                >
-                  {skillsList.map((name) => (
-                    <MenuItem key={name} value={name}>
-                      <Checkbox
-                        checked={candidateData.skills.indexOf(name) > -1}
-                      />
-                      <ListItemText primary={name} />
-                    </MenuItem>
-                  ))}
-                </Select>
-              </FormControl>
-            </Grid>
-            <Grid item xs={12} md={6}>
-              <la>
-                interested Domains<span style={{ color: "red" }}>*</span>
-              </la>
-              <FormControl fullWidth required sx={{ minWidth: "100%" }}>
-                <InputLabel id="demo-simple-select-required-label">
-                  Select
-                </InputLabel>
-                <Select
-                  sx={{ width: "85%" }}
-                  labelId="demo-simple-select-required-label"
-                  id="demo-simple-select-required"
-                  value={candidateData.domain}
-                  label="Age *"
-                  onChange={handleDomainChange}
-                >
-                  <MenuItem value="">
-                    <em>None</em>
-                  </MenuItem>
-                  <MenuItem value={10}>FrontEnd</MenuItem>
-                  <MenuItem value={20}>BackEnd</MenuItem>
-                  <MenuItem value={30}>Full stack</MenuItem>
-                </Select>
-                <FormHelperText>Required</FormHelperText>
-              </FormControl>
-            </Grid> */}
+            
           </Grid>
         </div>
       ) : (

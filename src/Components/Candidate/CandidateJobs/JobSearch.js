@@ -4,7 +4,6 @@ import Autocomplete from "@mui/material/Autocomplete";
 import { domainList, skillsList } from "../../../constants";
 import {
   Grid,
-  Chip,
   FormControl,
   OutlinedInput,
   ListItemText,
@@ -38,10 +37,10 @@ function JobSearch({ filter, setFilter }) {
   };
   return (
     <div>
-      <Grid constainer spacing={2}>
-        <Grid item xs={12} sm={6}>
+      <Grid container>
+        <Grid item xs={12} sm={6} columnSpacing={4} rowSpacing={4}>
           <Autocomplete
-            fullWidth
+            
             value={filter.selectedDomain}
             onChange={(event, newValue) => {
               setFilter((p) => {
@@ -56,7 +55,6 @@ function JobSearch({ filter, setFilter }) {
             }}
             id="controllable-states-demo"
             options={domainList}
-            sx={{ width: 300 }}
             renderInput={(params) => (
               <TextField {...params} placeholder="Domain" />
             )}

@@ -1,25 +1,23 @@
-import React, { useState, useEffect } from "react";
-import { TextField, Grid, Box } from "@mui/material";
+import React from "react";
+import { TextField, Grid} from "@mui/material";
 import Button from "@mui/material/Button";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
-import Chip from "@mui/material/Chip";
 import OutlinedInput from "@mui/material/OutlinedInput";
-import { useTheme } from "@mui/material/styles";
 import InputLabel from "@mui/material/InputLabel";
-import { Label } from "@mui/icons-material";
 import ListItemText from "@mui/material/ListItemText";
-import { collection, addDoc, setDoc, doc } from "firebase/firestore";
+import {  setDoc, doc } from "firebase/firestore";
 import { db } from "../../../config/firebaseInitisize";
 import Checkbox from "@mui/material/Checkbox";
 import FormHelperText from "@mui/material/FormHelperText";
-import { domains, skillsList } from "../../../constants/index";
+import { skillsList } from "../../../constants/index";
 import { useNavigate } from "react-router-dom";
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
 const MenuProps = {
   PaperProps: {
+    
     style: {
       maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
       width: 250,
@@ -64,19 +62,24 @@ function CandidateONboarding() {
   };
 
   const submitInfo = async (e) => {
-    let userInfo = JSON.parse(localStorage.getItem("user"));
-    let userId = userInfo.uid;
+    let userData = JSON.parse(localStorage.getItem("user"));
+    let userId = userData.uid;
     e.preventDefault();
     console.log(candidateInfo);
+    const finalInfo={
+      ...candidateInfo,
+      userId: userId,
+      step: 2,
+      user_type: "candidate",
+    }
     try {
       const docRef = await setDoc(doc(db, "usersData", userId), {
-        ...candidateInfo,
-        userId: userId,
-        step: 200,
-        user_type: "candidate",
+        ...finalInfo,
       });
-
+      localStorage.setItem('user', JSON.stringify({ ...userData, userInfo: { ...finalInfo } }));
+     setTimeout(() => {
       navigate("/candidate/profile");
+     }, 2000);
     } catch (e) {
       alert("Error occored");
       console.error("Error adding document: ", e);
@@ -99,18 +102,17 @@ function CandidateONboarding() {
   return (
     <div
       style={{
-        backgroundColor: "#e5e5e5",
+        backgroundColor: "#EFEEEE",
         minHeight: "100vh",
-        paddingTop: "50px",
+        paddingTop: "20px",
       }}
     >
       <form onSubmit={(e) => submitInfo(e)}>
         <div
           style={{
             maxWidth: "1100px",
-            margin: "50px 20px 0 20px ",
+            margin: "auto",
             padding: "20px",
-            paddingTop: "50px",
             borderRadius: "20px",
           }}
         >
