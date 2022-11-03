@@ -87,13 +87,14 @@ function Signup({ type }) {
         // ...
       })
       .catch((error) => {
-        alert("error");
+        
         // Handle Errors here.
         // const errorCode = error.code;
-        // const errorMessage = error.message;
+        const errorMessage = error.message;
         // // The email of the user's account used.
         // const email = error.customData.email;
         // The AuthCredential type that was used.
+        alert(errorMessage);
         GoogleAuthProvider.credentialFromError(error);
         // ...
       });
