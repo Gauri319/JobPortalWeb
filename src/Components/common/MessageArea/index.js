@@ -27,7 +27,7 @@ function MessageArea({
     }
   };
   return (
-    <div style={{width:"fit-content",border:"1px solid red",position: "fixed",
+    <div style={{width:"fit-content",position: "fixed",
     bottom: "80px",maxHeight:"800px",overflow:"auto"}}>
       {selectedConversation && allMessages ? (
         <div>
@@ -53,7 +53,6 @@ function MessageArea({
             })}
           </div>
           <form
-             style={{position:"fixed",bottom:"0px"}}
             onSubmit={(e) => {
               e.preventDefault();
               onSendMessage(messagetext);
