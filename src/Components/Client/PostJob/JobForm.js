@@ -14,7 +14,7 @@ import {
   Box,
 } from "@mui/material";
 import uuid from 'uuidv4';
-import { setDoc, addDoc, collection, doc } from "firebase/firestore";
+import { setDoc, doc } from "firebase/firestore";
 import { db } from "../../../config/firebaseInitisize";
 import { domainList, skillsList } from "../../../constants/";
 const ITEM_HEIGHT = 48;

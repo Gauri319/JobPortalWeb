@@ -46,7 +46,7 @@ function Signup({ type }) {
             } else {
             setTimeout(() => {
               navigate("/candidate/profile");
-            }, 2000);
+            }, 1000);
             }
           }
         } else {
