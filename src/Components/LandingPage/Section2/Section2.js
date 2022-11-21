@@ -1,12 +1,8 @@
-import React, { useState } from 'react'
+import React from 'react'
 import './Section2.css'
 import cards from './Section2-card'
-import { ListItemSecondaryAction } from '@mui/material';
 
 const Section2 = () => {
-
-    const [item, setItem] = useState(cards);
-
     return (
         <>
             <div className="section-2">
@@ -16,18 +12,16 @@ const Section2 = () => {
                 <div className="card-container">
 
                     {
-                        item.map((elem) => {
-                            const { id, svg, jobProfile, vacancy } = elem
-
+                        cards.map((elem) => {
                             return (
 
-                                <div className="single-card">
+                                <div className="single-card" key={elem.id}>
                                     <div className="section2-logo">
-                                        {svg}
+                                        {elem.svg}
                                     </div>
                                     <div className="section2-des">
-                                        <p className='job-profile'>{jobProfile}</p>
-                                        <p2 className='vacancy'>{vacancy}</p2>
+                                        <p className='job-profile'>{elem.jobProfile}</p>
+                                        <p2 className='vacancy'>{elem.vacancy}</p2>
                                     </div>
                                 </div>
                             )

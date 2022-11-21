@@ -11,9 +11,8 @@
 .jobCard {
   width: 236px;
   height: 265px;
-  /* padding: 19px 12px 24px 20px; */
   display: flex;
-  align-items: start;
+  align-items: flex-start;
   justify-content: center;
   flex-direction: column;
 }
@@ -25,11 +24,9 @@
   justify-content: space-between;
   align-items: center;
 }
-.company .image {
-}
 .company .name {
   display: flex;
-  align-items: start;
+  align-items: flex-start;
   justify-content: space-evenly;
   flex-direction: column;
 }
@@ -39,10 +36,8 @@
   font-weight: 400;
   font-size: 18px;
   line-height: 21px;
-  /* identical to box height */
   margin: 0;
   text-align: center;
-
   color: #000000;
 }
 .company .name p {
@@ -57,7 +52,7 @@
 }
 .jobCard .role {
   display: flex;
-  align-items: start;
+  align-items:flex-start;
   justify-content: center;
   flex-direction: column;
 }
@@ -69,7 +64,6 @@
   font-size: 25px;
   line-height: 29px;
   text-align: center;
-
   color: #000000;
 }
 .jobCard .role .time {
@@ -104,8 +98,6 @@
   font-weight: 400;
   font-size: 18px;
   line-height: 21px;
-  /* identical to box height */
-
   color: #000000;
 }
 .apply .card-btn {

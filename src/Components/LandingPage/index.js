@@ -7,7 +7,8 @@ import BannerImage from "./Section4";
 import Headers from "./Headers";
 function LandingPage() {
   return (
-    <div>
+    <div
+    style={{maxWidth:"100vw"}}>
       <div>
         <NavBar />
         <Headers />
