@@ -2,10 +2,14 @@ import React, { useEffect } from "react";
 import { query, where, getDocs, collection } from "firebase/firestore";
 import { db } from "../../../config/firebaseInitisize";
 import ApplicationTable from "../../common/ApplicationTable";
+import Loding from "../../common/Loding/Loding";
+import Navbar from "../../common/NavBar";
+import CandidateHOC from "../../HOC/CandidateHOC";
+import { Box } from "@mui/material";
 function CandidateApplication() {
   const [applications, setAllApplications] = React.useState(null);
-  const loggedInUser = JSON.parse(localStorage.getItem("user"));
-  const candidateId = loggedInUser.uid;
+  const loggedInUser = JSON.parse(localStorage.getItem("userInfo"));
+  const candidateId = loggedInUser.UserId;
   const fetchAllApplications = async () => {
     try {
       const q = query(
@@ -20,6 +24,7 @@ function CandidateApplication() {
 
       });
       setAllApplications(applications);
+      console.log(applications)
     } catch (err) {
       console.log(err);
     }
@@ -30,8 +35,11 @@ function CandidateApplication() {
   }, []);
   return (
     <div>
+      <Navbar/>
+      <CandidateHOC/>
+      <Box maxWidth="md" sx={{margin:"10px auto"}}>
       {applications && applications.length === 0 ? (
-        <div>no applications</div>
+        <div>You Don't have  applications</div>
       ) : applications && applications.length > 0 ? (
         <div>
           <ApplicationTable
@@ -42,14 +50,14 @@ function CandidateApplication() {
               { label: "Budget", key: "project_bugdet" },
               { label: "Status", key: "interest_showen" },
               { label: "date", key: "createdAt" },
-            ]}
+            ]} 
           
           rows={applications}
           />
         </div>
       ) : (
-        <div>loading</div>
-      )}
+        <div><Loding/></div>
+      )}</Box>
     </div>
   );
 }

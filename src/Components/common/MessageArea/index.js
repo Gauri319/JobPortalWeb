@@ -7,8 +7,8 @@ function MessageArea({
   allMessages,
 }) {
   const [messagetext, setMessage] = React.useState("");
-  const loggedInUser = JSON.parse(localStorage.getItem("user"));
-  const loggedId = loggedInUser.uid;
+  const loggedInUser = JSON.parse(localStorage.getItem("userInfo"));
+  const loggedId = loggedInUser.UserId;
   useEffect(() => {
     if (selectedConversation) {
       fetchAllOneToOneMessages();
@@ -20,28 +20,35 @@ function MessageArea({
       if (message.sender_role === "candidate") {
         return "#26D7AB";
       } else {
-        return "#7F31D2";
+        return "#4715BA";
       }
     } else {
-      return "#F2F2F2";
+      return "#E8E7E7";
     }
   };
   return (
-    <div style={{width:"fit-content",position: "fixed",
-    bottom: "80px",maxHeight:"800px",overflow:"auto"}}>
+    <div style={{ width: "100%", minHeight: "600px", overflow: "auto", border: "1px dotted var(--black)", position: "relative" }}>
       {selectedConversation && allMessages ? (
         <div>
-          <div>
+          <div style={{
+             position: "absolute",
+            bottom: "60px", display: "flex", flexDirection: "column-reverse",
+            maxHeight:"520px",
+            overflow:"auto"
+            // alignItems: message.sender_id === loggedId ? "flex-end":"flex-start"
+          }}>
             {allMessages.map((message) => {
               return (
                 <div
                   style={{
-                    borderRadius: " 0px 16px 16px 16px",
+                    borderRadius: message.sender_id === loggedId ? " 16px 0px 16px 16px" : "0px 16px 16px 16px",
                     width: "fit-content",
+                    float:"right",
                     padding: "10px",
                     margin: "5px 10px",
+                    alignSelf:message.sender_id === loggedId ?"flex-end":"flex-start",
                     marginLeft:
-                      message.sender_id === loggedId ? "auto" : "10px",
+                      message.sender_id === loggedId ? "10px" : "0",
                     background: checkType(message),
                     color: message.sender_id === loggedId && "white",
                   }}
@@ -52,41 +59,46 @@ function MessageArea({
               );
             })}
           </div>
-          <form
-            onSubmit={(e) => {
-              e.preventDefault();
-              onSendMessage(messagetext);
-              setMessage("");
-            }}
-          >
-            <Grid
-              sx={{
-                paddingBottom: "10px",
-                alignItems: "center",
-              }}
-              container spacing={2}>
-              <Grid item xs={9}>
-                <TextField
-                  onChange={(e) => setMessage(e.target.value)}
-                  value={messagetext}
-                  fullWidth
-                  id="outlined-basic"
-                  label="Your Message"
-                  variant="outlined"
-                  size="small"
-                />
-              </Grid>
-              <Grid item xs={3}>
-                <Button variant="contained" color="secondary" type="submit">
-                  Send
-                </Button>
-              </Grid>
-            </Grid>
-          </form>
         </div>
       ) : (
         <div>select a conversation</div>
       )}
+      <form
+        onSubmit={(e) => {
+          e.preventDefault();
+          if(messagetext!==""){
+            onSendMessage(messagetext);
+          }
+          setMessage("");
+        }}
+      >
+
+        <Grid
+          sx={{
+            paddingBottom: "10px",
+            alignItems: "center",
+            position: "absolute",
+            bottom: "0"
+          }}
+          container spacing={2} >
+          <Grid item xs={10}>
+            <TextField
+              onChange={(e) => setMessage(e.target.value)}
+              value={messagetext}
+              fullWidth
+              id="outlined-basic"
+              label="Your Message"
+              variant="outlined"
+              size="small"
+            />
+          </Grid>
+          <Grid item xs={1}>
+            <Button variant="contained" sx={{ backgroundColor: "var(--blue)" }} type="submit">
+              Send
+            </Button>
+          </Grid>
+        </Grid>
+      </form>
     </div>
   );
 }

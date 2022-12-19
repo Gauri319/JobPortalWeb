@@ -13,6 +13,8 @@ import {
 } from "firebase/firestore";
 import { db } from "../../../config/firebaseInitisize";
 import uuid from "uuidv4";
+import Navbar from "../../common/NavBar";
+import ClientHOC from "../../HOC/ClientHOC";
 function ClientConversation() {
   const [conversationMobileSidebar, setConversationMobileSidebar] =
     useState(true);
@@ -21,8 +23,8 @@ function ClientConversation() {
   const [selectedConversation, setSelectedConversation] = React.useState(null);
 
   const getAllConversation = async () => {
-    const loggedInUser = JSON.parse(localStorage.getItem("user"));
-    const clientId = loggedInUser.uid;
+    const loggedInUser = JSON.parse(localStorage.getItem("userInfo"));
+    const clientId = loggedInUser.UserId;
     const q = await query(
       collection(db, "conversations"),
       where("client_id", "==", clientId)
@@ -54,8 +56,8 @@ function ClientConversation() {
   };
 
   const onSendMessage = async (messagetext) => {
-    const loggedInUser = JSON.parse(localStorage.getItem("user"));
-    const clientId = loggedInUser.uid;
+    const loggedInUser = JSON.parse(localStorage.getItem("userInfo"));
+    const clientId = loggedInUser.UserId;
     const message_id = uuid();
     const message = {
       message: messagetext,
@@ -69,11 +71,13 @@ function ClientConversation() {
 
   return (
     <div>
-      <Grid container spacing={2}>
+      <Navbar/>
+      <ClientHOC/>
+      <Grid container spacing={2} maxWidth='md' sx={{margin:"10px auto"}}>
         <Grid
           item
           xs={12}
-          md={3}
+          md={4}
           sx={{
             display: {
               xs: conversationMobileSidebar ? "block" : "none",
@@ -91,7 +95,7 @@ function ClientConversation() {
         <Grid
           item
           xs={12}
-          md={9}
+          md={8}
           sx={{
             display: {
               xs: conversationMobileSidebar ? "none" : "block",

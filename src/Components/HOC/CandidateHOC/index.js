@@ -39,9 +39,9 @@ function CandidateHOC({ children }) {
   };
 
   const s1 = {
-    color: "#740EB8",
+    color: "var(--white)",
     "&:hover": {
-      color: "#340EB0"
+      color: "var(--white)"
     },
     width: "20px",
     display: "flex",
@@ -49,21 +49,12 @@ function CandidateHOC({ children }) {
     fontSize: { lg: "15px", sm: "16px", xs: "11px" },
     textTransform: { lg: "uppercase", sm: "lowercase", xs: "lowercase" },
     wordWrap: "break-word",
+    margin:"5px auto"
   };
 
   return (
     <div>
-      <Box sx={{ height: { lg: '70px', sm: "0px", xs: "0px", md: "70px" } }}>
-        <AppBar
-          position="fixed"
-          sx={{
-            bgcolor: "white",
-            left: "0",
-            top: { xs: "auto", lg: "0", sm: "auto", md: "0" },
-            bottom: { xs: "0", lg: "auto", sm: "0", md: "auto" }
-          }}
-        >
-          <Toolbar>
+      <Box sx={{backgroundColor:"var(--blue)",  margin:"20px auto" }}>
             <Grid container alignItems="center" justifyContent="center" columnSpacing={2}  >
               {routes.map((route, index) => {
                 return (
@@ -75,8 +66,6 @@ function CandidateHOC({ children }) {
                 );
               })}
             </Grid>
-          </Toolbar>
-        </AppBar>
       </Box>
       <div style={{ margin: "30px auto", maxWidth: "1100px", width: "90%" }}>
         {children}

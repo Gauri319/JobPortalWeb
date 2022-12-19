@@ -21,7 +21,7 @@ const Section2 = () => {
                                     </div>
                                     <div className="section2-des">
                                         <p className='job-profile'>{elem.jobProfile}</p>
-                                        <p2 className='vacancy'>{elem.vacancy}</p2>
+                                        <p className='vacancy'>{elem.vacancy}</p>
                                     </div>
                                 </div>
                             )

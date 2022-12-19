@@ -35,17 +35,21 @@ function JobForm() {
   // budget=''
   // description=''
   // dueration=''
-  // language=''
+  // language=''uid
   //
   const [jobData, setJobData] = useState({
-    title: "",
+    companyname: "",
 
     description: "",
-    budget: "",
-    duration: "",
+    size: "",
+    city:"",
+    type: "",
     experience: "",
     language: "",
     domain: "",
+    state:"",
+    active:"",
+    qualification:"",
     skills: [],
   });
   const handleSkillsChange = (event) => {
@@ -68,203 +72,55 @@ function JobForm() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const loggedInUser = JSON.parse(localStorage.getItem("user"));
-    const { uid } = loggedInUser;
+    const loggedInUser = JSON.parse(localStorage.getItem("userInfo"));
+    const uid = loggedInUser.UserId;
     const job_id = uuid();
     console.log(jobData);
     const docRef = await setDoc(doc(db, "jobs", job_id), {
       ...jobData,
       job_id,
       client_id: uid,
-      client_name: loggedInUser.displayName,
+      // client_name: loggedInUser.displayName,
     });
     console.log("Document written with ID: ", docRef.id);
+    setJobData(
+      {companyname: "",
+      description: "",
+      size: "",
+      city:"",
+      type: "",
+      experience: "",
+      language: "",
+      domain: "",
+      state:"",
+      active:"",
+      qualification:"",
+      skills: [],}
+    )
   };
 
   return (
-    <div
-      style={{
-        backgroundColor: "#e5e5e5",
-        minHeight: "100vh",
-        paddingTop: "50px"
-      }}>
+    <div>
       <form onSubmit={handleSubmit}>
-        <div
-          style={{
-            maxWidth: "1100px",
-            paddingTop: "30px",
-            borderRadius: "20px",
-          }}
-        >
+        <div>
 
-          <Grid container spacing={3}
+          <Grid container 
             maxWidth="90%"
             p={4}
             sx={{
               backgroundColor: "#FFFFFF",
-              boxShadow: "0px 0px 15px #DCD7D7",
-              margin: "auto",
+              margin: "20px auto",
               fontSize: "15px",
+              borderLeft:"0.5px dotted var(--grey)"
             }}
+            columnSpacing={3}
           >
-            <Grid item xs={12} md={6}>
-              <label>Title</label>
-              <TextField
-                required
-                value={jobData.title}
-                onChange={(e) => {
-                  setJobData((p) => {
-                    return {
-                      ...p,
-                      title: e.target.value,
-                    };
-                  });
-                }}
-                size="small"
-                fullWidth
-                id="outlined-basic"
-                variant="outlined"
-              />
-            </Grid>
-
-            <Grid item xs={12} md={6}>
-              <label>description*</label>
-              <TextField
-                required
-                value={jobData.description}
-                onChange={(e) => {
-                  setJobData((p) => {
-                    return {
-                      ...p,
-                      description: e.target.value,
-                    };
-                  });
-                }}
-                size="small"
-                fullWidth
-                id="outlined-basic"
-                variant="outlined"
-              />
-            </Grid>
-            <Grid item xs={12} md={6}>
-              <label>budget*</label>
-              <TextField
-                type="number"
-                required
-                value={jobData.budget}
-                onChange={(e) => {
-                  setJobData((p) => {
-                    return {
-                      ...p,
-                      budget: e.target.value,
-                    };
-                  });
-                }}
-                size="small"
-                fullWidth
-                id="outlined-basic"
-                variant="outlined"
-              />
-            </Grid>
-            <Grid item xs={12} md={6}>
-              <label>Duration*</label>
-              <TextField
-                required
-                value={jobData.duration}
-                onChange={(e) => {
-                  setJobData((p) => {
-                    return {
-                      ...p,
-                      duration: e.target.value,
-                    };
-                  });
-                }}
-                size="small"
-                fullWidth
-                id="outlined-basic"
-                variant="outlined"
-              />
-            </Grid>
-            <Grid item xs={12} md={6}>
-              <label>experience</label>
-              <TextField
-                required
-                value={jobData.experience}
-                onChange={(e) => {
-                  setJobData((p) => {
-                    return {
-                      ...p,
-                      experience: e.target.value,
-                    };
-                  });
-                }}
-                size="small"
-                fullWidth
-                id="outlined-basic"
-                variant="outlined"
-              />
-            </Grid>
-            <Grid item xs={12} md={6}>
-              <label>Language</label>
-              <TextField
-                required
-                value={jobData.language}
-                onChange={(e) => {
-                  setJobData((p) => {
-                    return {
-                      ...p,
-                      language: e.target.value,
-                    };
-                  });
-                }}
-                size="small"
-                fullWidth
-                id="outlined-basic"
-                variant="outlined"
-              />
-            </Grid>
-
-            <Grid item sx={12} md={6}>
-              <la>
-                Skills<span style={{ color: "red" }}>*</span>
-              </la>
+            <Grid item xs={12} md={12}>
+              <h4>Job Position</h4>
               <FormControl
                 width="100%"
                 fullWidth
-                required
-                sx={{ minWidth: "100%" }}
-              >
-                <InputLabel id="demo-multiple-checkbox-label">
-                  Select
-                </InputLabel>
-                <Select
-                  labelId="demo-multiple-checkbox-label"
-                  id="demo-multiple-checkbox"
-                  multiple
-                  fullWidth
-                  width="100%"
-                  value={jobData.skills}
-                  onChange={handleSkillsChange}
-                  input={<OutlinedInput label="Tag" />}
-                  renderValue={(selected) => selected.join(", ")}
-                  MenuProps={MenuProps}
-                >
-                  {skillsList.map((name) => (
-                    <MenuItem key={name} value={name}>
-                      <Checkbox checked={jobData.skills.indexOf(name) > -1} />
-                      <ListItemText primary={name} />
-                    </MenuItem>
-                  ))}
-                </Select>
-              </FormControl>
-            </Grid>
-            <Grid item xs={12} md={6}>
-              <la>
-                Domain<span style={{ color: "red" }}>*</span>
-              </la>
-              <FormControl
-                width="100%"
-                fullWidth
+                variant="standard"
                 required
                 sx={{ minWidth: "100%" }}
               >
@@ -272,7 +128,8 @@ function JobForm() {
                   Select
                 </InputLabel>
                 <Select
-                  sx={{ width: "85%" }}
+                  width="100%"
+                  fullWidth
                   id="demo-simple-select-required"
                   value={jobData.domain}
                   label="Age *"
@@ -292,6 +149,239 @@ function JobForm() {
                 <FormHelperText>Required</FormHelperText>
               </FormControl>
             </Grid>
+            <Grid item sx={12} md={12}>
+              <h4>Required Skills</h4>
+              <FormControl
+                width="100%"
+                fullWidth
+                variant="standard"
+                required
+                sx={{ minWidth: "100%" }}
+              >
+                <InputLabel id="demo-multiple-checkbox-label">
+                  Select
+                </InputLabel>
+                <Select
+                  labelId="demo-multiple-checkbox-label"
+                  id="demo-multiple-checkbox"
+                  multiple
+                  width="100%"
+                  value={jobData.skills}
+                  onChange={handleSkillsChange}
+                  // input={<OutlinedInput label="Tag" />}
+                  renderValue={(selected) => selected.join(", ")}
+                  MenuProps={MenuProps}
+                >
+                  {skillsList.map((name) => (
+                    <MenuItem key={name} value={name}>
+                      <Checkbox checked={jobData.skills.indexOf(name) > -1} />
+                      <ListItemText primary={name} />
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
+            </Grid>
+
+            <Grid item xs={12} md={12}>
+              <h4>Company Name</h4>
+              <TextField
+                required
+                value={jobData.companyname}
+                onChange={(e) => {
+                  setJobData((p) => {
+                    return {
+                      ...p,
+                      companyname: e.target.value,
+                    };
+                  });
+                }}
+                size="small"
+                fullWidth
+                id="outlined-basic"
+                variant="standard"
+                placeholder="Company Name"
+              />
+            </Grid>
+            <Grid item xs={12} md={6}>
+              <h4>City</h4>
+              <TextField
+                required
+                value={jobData.city}
+                onChange={(e) => {
+                  setJobData((p) => {
+                    return {
+                      ...p,
+                      city: e.target.value,
+                    };
+                  });
+                }}
+                size="small"
+                fullWidth
+                id="outlined-basic"
+                variant="standard"
+                placeholder="Company city"
+              />
+            </Grid>
+            <Grid item xs={12} md={6}>
+              <h4>State</h4>
+              <TextField
+                required
+                value={jobData.state}
+                onChange={(e) => {
+                  setJobData((p) => {
+                    return {
+                      ...p,
+                      state: e.target.value,
+                    };
+                  });
+                }}
+                size="small"
+                fullWidth
+                id="outlined-basic"
+                variant="standard"
+                placeholder="Company state"
+              />
+            </Grid>
+            <Grid item xs={12} md={6}>
+              <h4>hiering Active</h4>
+              <TextField
+                required
+                value={jobData.active}
+                onChange={(e) => {
+                  setJobData((p) => {
+                    return {
+                      ...p,
+                      active: e.target.value,
+                    };
+                  });
+                }}
+                size="small"
+                fullWidth
+                id="outlined-basic"
+                variant="standard"
+                placeholder="Yes Or No"
+              />
+            </Grid>
+
+            <Grid item xs={12} md={12}>
+              <h4>Role and Responsibilities*</h4>
+              <TextField
+                required
+                value={jobData.description}
+                onChange={(e) => {
+                  setJobData((p) => {
+                    return {
+                      ...p,
+                      description: e.target.value,
+                    };
+                  });
+                }}
+                size="small"
+                fullWidth
+                id="outlined-basic"
+                variant="standard"
+              />
+            </Grid>
+            <Grid item xs={12} md={12}>
+              <h4>Required Qualification</h4>
+              <TextField
+                required
+                value={jobData.qualification}
+                onChange={(e) => {
+                  setJobData((p) => {
+                    return {
+                      ...p,
+                      qualification: e.target.value,
+                    };
+                  });
+                }}
+                size="small"
+                fullWidth
+                id="outlined-basic"
+                variant="standard"
+              />
+            </Grid>
+            <Grid item xs={12} md={6}>
+              <h4>Company Size*</h4>
+              <TextField
+                type="number"
+                required
+                value={jobData.size}
+                onChange={(e) => {
+                  setJobData((p) => {
+                    return {
+                      ...p,
+                      size: e.target.value,
+                    };
+                  });
+                }}
+                size="small"
+                fullWidth
+                id="outlined-basic"
+                variant="standard"
+              />
+            </Grid>
+            <Grid item xs={12} md={6}>
+              <h4>Job type</h4>
+              <TextField
+                required
+                value={jobData.type}
+                onChange={(e) => {
+                  setJobData((p) => {
+                    return {
+                      ...p,
+                      type: e.target.value,
+                    };
+                  });
+                }}
+                size="small"
+                fullWidth
+                id="outlined-basic"
+                variant="standard"
+                placeholder="fullTime/PartTime/Internship"
+              />
+            </Grid>
+            <Grid item xs={12} md={6}>
+              <h4>Experience</h4>
+              <TextField
+                required
+                value={jobData.experience}
+                onChange={(e) => {
+                  setJobData((p) => {
+                    return {
+                      ...p,
+                      experience: e.target.value,
+                    };
+                  });
+                }}
+                size="small"
+                fullWidth
+                id="outlined-basic"
+                variant="standard"
+                type="number"
+              />
+            </Grid>
+            <Grid item xs={12} md={6}>
+              <h4>Language</h4>
+              <TextField
+                required
+                value={jobData.language}
+                onChange={(e) => {
+                  setJobData((p) => {
+                    return {
+                      ...p,
+                      language: e.target.value,
+                    };
+                  });
+                }}
+                size="small"
+                fullWidth
+                id="outlined-basic"
+                variant="standard"
+              />
+            </Grid>
+
+
             <Grid item xs={12} textAlign="right">
               <Button
                 variant="contained"

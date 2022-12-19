@@ -70,9 +70,10 @@ function JobInfoModal({ open, setOpen, ModalData, applyOnJob }) {
           {ModalData?.title}
         </BootstrapDialogTitle>
         <DialogContent dividers>
+          <Typography gutterBottom><h2 style={{color:"var(--blue)"}}>{ModalData?.domain}</h2></Typography>
+          <Typography gutterBottom><h4>{ModalData?.companyname}</h4></Typography>
+          <Typography gutterBottom><p>{ModalData?.type}</p></Typography>
           <Typography gutterBottom>{ModalData?.description}</Typography>
-          <Typography gutterBottom>{ModalData?.duration}</Typography>
-          <Typography gutterBottom>{ModalData?.domain}</Typography>
         </DialogContent>
         <DialogActions>
           <Button

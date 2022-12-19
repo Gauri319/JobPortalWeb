@@ -38,7 +38,7 @@ import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import QuestionAnswerIcon from "@mui/icons-material/QuestionAnswer";
 import TextSnippetIcon from "@mui/icons-material/TextSnippet";
 
-const routes = [
+const routes = [ 
   {
     icon: <WorkIcon />,
     name: "Jobs",
@@ -68,9 +68,9 @@ function ClientHOC({ children }) {
   };
 
   const s1 = {
-    color: "#740EB8",
+    color: "var(--white)",
     "&:hover": {
-      color: "#340EB0",
+      color: "var(--white)",
     },
     width: "20px",
     display: "flex",
@@ -82,17 +82,7 @@ function ClientHOC({ children }) {
 
   return (
     <div>
-      <Box sx={{ height: { lg: "70px", sm: "0px", xs: "0px", md: "70px" } }}>
-        <AppBar
-          position="fixed"
-          sx={{
-            bgcolor: "white",
-            left: "0",
-            top: { xs: "auto", lg: "0", sm: "auto", md: "0" },
-            bottom: { xs: "0", lg: "auto", sm: "0", md: "auto" },
-          }}
-        >
-          <Toolbar>
+      <Box sx={{backgroundColor:"var(--blue)",  margin:"20px auto" }}>
             <Grid
               container
               alignItems="center"
@@ -116,8 +106,6 @@ function ClientHOC({ children }) {
                 );
               })}
             </Grid>
-          </Toolbar>
-        </AppBar>
       </Box>
       <div style={{ margin: "30px auto", maxWidth: "1100px", width: "90%" }}>
         {children}

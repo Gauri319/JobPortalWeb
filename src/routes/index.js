@@ -1,6 +1,7 @@
 import React, { Suspense } from "react";
 import LandingPage from "../Components/LandingPage";
-import Signup from "../Components/Signup";
+import Signup from "../Components/Signup/Signup";
+import SignIn from "../Components/Signup/SignIn";
 import ClientOnboarding from "../Components/OnboardingForm/ClientOnboarding";
 import CandidateONboarding from "../Components/OnboardingForm/CandidateOnboarding";
 import {
@@ -44,35 +45,92 @@ function Navs() {
       <Router>
         <Routes>
           <Route path="/" element={<LandingPage />} />
-          <Route
+          {/* <Route
             path="/signIn/candidate"
             element={<Signup type={"candidate"} />}
-          />
+          /> */}
           <Route
-            path="/onboarding/candidate"
+            path="/Onboarding/Candidate"
             element={<CandidateONboarding />}
           />
+          <Route
+            path="/Signup/:type"
+            element={<Signup/>}
+          />
+           <Route
+            path="/SignIn/:type"
+            element={<SignIn/>}
+          />
+          <Route
+              path="/candidate/profile"
+              element={
+                  <CandidateProfile />
+              }
+            />
+            <Route
+              path="/client/profile"
+              element={
+                  <ClientProfile />
+              }
+            />
+             <Route
+              path="candidate/jobs"
+              element={
+                  <CandidateJobs />
+              }
+            />
+              <Route
+              path="/client/Jobs"
+              element={
+                  <PostJob/>
+              }
+            />
+            <Route
+              path="candidate/applications"
+              element={
+                  <CandidateApplication />
+              }
+            />
+            <Route
+              path="candidate/conversation"
+              element={
+                  <CandidateConversation />
+              }
+            />
+              <Route
+              path="/client/applicants"
+              element={
+                  <CLientApplicants />
+              }
+            />
+            <Route
+              path="/client/conversation"
+              element={
+                  <ClientConversation />
+              }
+            />
+
          
           <Route element={<PrivateRouteCandidate />}>
-            <Route
+            {/* <Route
               path="/candidate/profile"
               element={
                 <CandidateHOC>
                   <CandidateProfile />
                 </CandidateHOC>
               }
-            />
+            /> */}
 
-            <Route
+            {/* <Route
               path="candidate/jobs"
               element={
                 <CandidateHOC>
                   <CandidateJobs />
                 </CandidateHOC>
               }
-            />
+            /> */}
 
-            <Route
+            {/* <Route
               path="candidate/applications"
               element={
                 <CandidateHOC>
@@ -87,29 +145,29 @@ function Navs() {
                   <CandidateConversation />
                 </CandidateHOC>
               }
-            />
+            /> */}
           </Route>
-          <Route path="/signIn/client" element={<Signup type={"client"} />} />
+          {/* <Route path="/signIn/client" element={<Signup type={"client"} />} /> */}
           <Route path="/onboarding/client" element={<ClientOnboarding />} />
           <Route element={<PrivateRouteClient />}>
-            <Route
+            {/* <Route
               path="/client/profile"
               element={
                 <ClientHOC>
                   <ClientProfile />
                 </ClientHOC>
               }
-            />
-            <Route
+            /> */}
+            {/* <Route
               path="/client/Jobs"
               element={
                 <ClientHOC>
                   <PostJob />
                 </ClientHOC>
               }
-            />
+            /> */}
 
-            <Route
+            {/* <Route
               path="/client/applicants"
               element={
                 <ClientHOC>
@@ -124,7 +182,7 @@ function Navs() {
                   <ClientConversation />
                 </ClientHOC>
               }
-            />
+            /> */}
           </Route>
         </Routes>
       </Router>

@@ -1,5 +1,5 @@
 import React from "react";
-import NavBar from "./NavBar";
+import Navbar from "../common/NavBar";
 import Footer from "./Footer";
 import Section2 from "./Section2/Section2";
 import Section3 from "./section-3/section.js";
@@ -10,7 +10,7 @@ function LandingPage() {
     <div
     style={{maxWidth:"100vw"}}>
       <div>
-        <NavBar />
+        <Navbar />
         <Headers />
       </div>
 

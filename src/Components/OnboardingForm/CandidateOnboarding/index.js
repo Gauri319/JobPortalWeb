@@ -1,391 +1,148 @@
 import React from "react";
-import { TextField, Grid} from "@mui/material";
-import Button from "@mui/material/Button";
-import MenuItem from "@mui/material/MenuItem";
-import FormControl from "@mui/material/FormControl";
-import Select from "@mui/material/Select";
-import OutlinedInput from "@mui/material/OutlinedInput";
-import InputLabel from "@mui/material/InputLabel";
-import ListItemText from "@mui/material/ListItemText";
-import {  setDoc, doc } from "firebase/firestore";
+import { setDoc, doc } from "firebase/firestore";
 import { db } from "../../../config/firebaseInitisize";
-import Checkbox from "@mui/material/Checkbox";
-import FormHelperText from "@mui/material/FormHelperText";
-import { skillsList } from "../../../constants/index";
 import { useNavigate } from "react-router-dom";
-const ITEM_HEIGHT = 48;
-const ITEM_PADDING_TOP = 8;
-const MenuProps = {
-  PaperProps: {
-    
-    style: {
-      maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
-      width: 250,
-    },
-  },
-};
+import Navbar from "../../common/NavBar";
+import { Box } from "@mui/system";
+import Tab from '@mui/material/Tab';
+import TabContext from '@mui/lab/TabContext';
+import TabList from '@mui/lab/TabList';
+import TabPanel from '@mui/lab/TabPanel';
+import { createTheme, ThemeProvider } from "@mui/material";
+import Personalnfo from "./Personalnfo";
+import EducationalInfo from "./EducationalInfo";
+import AdditionalInfo from "./AdditionalInfo";
+import Loding from "../../common/Loding/Loding";
+
+
 
 function CandidateONboarding() {
   let navigate = useNavigate();
-  const loggedInUser = JSON.parse(localStorage.getItem("user"));
+  const loggedInUser = JSON.parse(localStorage.getItem("userInfo"));
+
   const [candidateInfo, setCandidateInfo] = React.useState({
-    name: "",
+    Firstname: "",
+    Lastname: "",
+    BirthDate: "",
+    location: "",
+    Country: "",
+    Gender: "",
     email: loggedInUser.email,
     phone: "",
+    Degree: "",
+    Branch: "",
+    College: "",
+    Percentage: "",
+    Summery: "",
+    salary: "",
     skills: [],
     domain: [],
     socialMedia: {
       linkedIn: "",
       github: "",
-      twitter: "",
-      instagram: "",
     },
   });
+  const [value, setValue] = React.useState('1');
+  const [loding, setLoding] = React.useState(false);
 
-  const handleSkillsChange = (event) => {
-    const {
-      target: { value },
-    } = event;
-    setCandidateInfo((p) => {
-      return {
-        ...p,
-        skills: typeof value === "string" ? value.split(",") : value,
-      };
-    });
-    // On autofill we get a stringified value.
+  const theme = createTheme({
+    palette: {
+      primary: {
+        main: "#3a80e9",
+      },
+    },
+  });
+  const handleChange = (event, newValue) => {
+    setValue(newValue);
   };
 
-  const handleDomainChange = (event) => {
-    setCandidateInfo((p) => {
-      return { ...p, domain: event.target.value };
-    });
-  };
 
   const submitInfo = async (e) => {
-    let userData = JSON.parse(localStorage.getItem("user"));
-    let userId = userData.uid;
+    setLoding(true);
+    let userData = JSON.parse(localStorage.getItem("userInfo"));
+    let userId = userData.UserId;
     e.preventDefault();
     console.log(candidateInfo);
-    const finalInfo={
+    const finalInfo = {
       ...candidateInfo,
       userId: userId,
       step: 2,
-      user_type: "candidate",
+      user_type: userData.type,
     }
+
     try {
       const docRef = await setDoc(doc(db, "usersData", userId), {
         ...finalInfo,
       });
-      localStorage.setItem('user', JSON.stringify({ ...userData, userInfo: { ...finalInfo } }));
-     setTimeout(() => {
+      setLoding(false)
       navigate("/candidate/profile");
-     }, 2000);
     } catch (e) {
-      alert("Error occored");
-      console.error("Error adding document: ", e);
+      alert("Error accured Please!try again");
+      setLoding(false)
+      console.error(e);
     }
-
     setCandidateInfo({
-      name: "",
-      email: "",
+      Firstname: "",
+      Lastname: "",
+      BirthDate: "",
+      location: "",
+      Country: "",
+      Gender: "",
+      email: loggedInUser.email,
       phone: "",
+      Degree: "",
+      Branch: "",
+      College: "",
+      Percentage: "",
+      Summery: "",
+      salary: "",
       skills: [],
       domain: [],
       socialMedia: {
         linkedIn: "",
         github: "",
-        twitter: "",
-        instagram: "",
       },
     });
-  };
+  }
   return (
-    <div
-      style={{
-        backgroundColor: "#EFEEEE",
-        minHeight: "100vh",
-        paddingTop: "20px",
-      }}
-    >
-      <form onSubmit={(e) => submitInfo(e)}>
-        <div
-          style={{
-            maxWidth: "1100px",
-            margin: "auto",
-            padding: "20px",
-            borderRadius: "20px",
-          }}
-        >
-          <Grid
-            container
-            spacing={3}
-            maxWidth="80%"
-            p={4}
-            sx={{
-              backgroundColor: "#FFFFFF",
-              boxShadow: "0px 0px 15px #DCD7D7",
-              margin: "auto",
-              fontSize: "15px",
-            }}
-          >
-            {/* ====================================================================================== */}
-            <Grid item xs={12} md={6}>
-              <label>Name*</label>
-              <TextField
-                required
-                value={candidateInfo.name}
-                onChange={(e) => {
-                  setCandidateInfo((p) => {
-                    return { ...p, name: e.target.value };
-                  });
-                }}
-                size="small"
-                fullWidth
-                id="outlined-basic"
-                variant="outlined"
-              />
-            </Grid>
-            <Grid item xs={12} md={6}>
-              <label>
-                email<span style={{ color: "red" }}>*</span>
-              </label>
-              <TextField
-                disabled
-                required
-                type="email"
-                value={candidateInfo.email}
-                onChange={(e) => {
-                  setCandidateInfo((p) => {
-                    return { ...p, email: e.target.value };
-                  });
-                }}
-                size="small"
-                fullWidth
-                id="outlined-basic"
-                variant="outlined"
-              />
-            </Grid>
-
-            <Grid item xs={12} md={6}>
-              <label>
-                Phone no.<span style={{ color: "red" }}>*</span>
-              </label>
-              <TextField
-                required
-                type="number"
-                inputProps={{ maxLength: 10 }}
-                value={candidateInfo.phone}
-                onChange={(e) => {
-                  setCandidateInfo((p) => {
-                    return { ...p, phone: e.target.value };
-                  });
-                }}
-                size="small"
-                fullWidth
-                id="outlined-basic"
-                variant="outlined"
-              />
-            </Grid>
-
-            <Grid item xs={12} md={12}>
-              <label>Education</label>
-              <TextField
-                value={candidateInfo.education}
-                onChange={(e) => {
-                  setCandidateInfo((p) => {
-                    return { ...p, education: e.target.value };
-                  });
-                }}
-                size="small"
-                fullWidth
-                id="outlined-basic"
-                variant="outlined"
-              />
-            </Grid>
-
-            <Grid item xs={12} md={12}>
-              <label>Experience</label>
-              <TextField
-                value={candidateInfo.experience}
-                onChange={(e) => {
-                  setCandidateInfo((p) => {
-                    return { ...p, experience: e.target.value };
-                  });
-                }}
-                size="small"
-                fullWidth
-                id="outlined-basic"
-                variant="outlined"
-              />
-            </Grid>
-
-            <Grid item xs={12} md={6}>
-              <label>linkedIn</label>
-              <TextField
-                value={candidateInfo.socialMedia.linkedIn}
-                onChange={(e) => {
-                  setCandidateInfo((p) => {
-                    return {
-                      ...p,
-                      socialMedia: {
-                        ...p.socialMedia,
-                        linkedIn: e.target.value,
-                      },
-                    };
-                  });
-                }}
-                size="small"
-                fullWidth
-                id="outlined-basic"
-                variant="outlined"
-              />
-            </Grid>
-            <Grid item xs={12} md={6}>
-              <label>Twitter</label>
-              <TextField
-                value={candidateInfo.socialMedia.twitter}
-                onChange={(e) => {
-                  setCandidateInfo((p) => {
-                    return {
-                      ...p,
-                      socialMedia: {
-                        ...p.socialMedia,
-                        twitter: e.target.value,
-                      },
-                    };
-                  });
-                }}
-                size="small"
-                fullWidth
-                id="outlined-basic"
-                variant="outlined"
-              />
-            </Grid>
-
-            <Grid item xs={12} md={6}>
-              <label>Github</label>
-              <TextField
-                value={candidateInfo.socialMedia.github}
-                onChange={(e) => {
-                  setCandidateInfo((p) => {
-                    return {
-                      ...p,
-                      socialMedia: { ...p.socialMedia, github: e.target.value },
-                    };
-                  });
-                }}
-                size="small"
-                fullWidth
-                id="outlined-basic"
-                variant="outlined"
-              />
-            </Grid>
-            <Grid item xs={12} md={6}>
-              <label>Instagram</label>
-              <TextField
-                value={candidateInfo.socialMedia.instagram}
-                onChange={(e) => {
-                  setCandidateInfo((p) => {
-                    return {
-                      ...p,
-                      socialMedia: {
-                        ...p.socialMedia,
-                        instagram: e.target.value,
-                      },
-                    };
-                  });
-                }}
-                size="small"
-                fullWidth
-                id="outlined-basic"
-                variant="outlined"
-              />
-            </Grid>
-
-            <Grid item xs={12} md={6}>
-              <la>
-                Tags<span style={{ color: "red" }}>*</span>
-              </la>
-              <FormControl required sx={{ width: "100%" }}>
-                <InputLabel id="demo-multiple-checkbox-label">
-                  Select
-                </InputLabel>
-                <Select
-                  labelId="demo-multiple-checkbox-label"
-                  id="demo-multiple-checkbox"
-                  multiple
-                  value={candidateInfo.skills}
-                  onChange={handleSkillsChange}
-                  input={<OutlinedInput label="Tag" />}
-                  renderValue={(selected) => selected.join(", ")}
-                  MenuProps={MenuProps}
-                >
-                  {skillsList.map((name) => (
-                    <MenuItem key={name} value={name}>
-                      <Checkbox
-                        checked={candidateInfo.skills.indexOf(name) > -1}
-                      />
-                      <ListItemText primary={name} />
-                    </MenuItem>
-                  ))}
-                </Select>
-              </FormControl>
-            </Grid>
-            <Grid item xs={12} md={6}>
-              <la>
-                interested Domains<span style={{ color: "red" }}>*</span>
-              </la>
-              <FormControl fullWidth required sx={{ minWidth: "100%" }}>
-                <InputLabel id="demo-simple-select-required-label">
-                  Select
-                </InputLabel>
-                <Select
-                  sx={{ width: "85%" }}
-                  labelId="demo-simple-select-required-label"
-                  id="demo-simple-select-required"
-                  value={candidateInfo.domain}
-                  label="Age *"
-                  onChange={handleDomainChange}
-                >
-                  <MenuItem value="">
-                    <em>None</em>
-                  </MenuItem>
-                  <MenuItem value={10}>FrontEnd</MenuItem>
-                  <MenuItem value={20}>BackEnd</MenuItem>
-                  <MenuItem value={30}>Full stack</MenuItem>
-                </Select>
-                <FormHelperText>Required</FormHelperText>
-              </FormControl>
-            </Grid>
-
-            {/* --------------------------------------------------- */}
-
-            <Grid item lg={12}>
-              <Button
-                variant="contained"
-                color="secondary"
-                size="small"
-                type="submit"
-                sx={{ float: "right", width: "150px" }}
-              >
-                Submit
-              </Button>
-            </Grid>
-            {/* ---------------------------------------------------------- */}
-          </Grid>
-        </div>
-      </form>
+    <div>
+      <Navbar />
+      {
+        loding?
+        <Loding/>:
+        <div>
+        <form onSubmit={(e) => submitInfo(e)}>
+          <Box sx={{ width: '100%', typography: 'body1' }}>
+            <ThemeProvider theme={theme}>
+              <TabContext value={value}>
+                <Box sx={{ borderBottom: 1, borderColor: 'divider', margin: "15px auto" }}>
+                  <TabList onChange={handleChange} variant="fullWidth">
+                    <Tab label="Personal Info" value="1" />
+                    <Tab label="Educational Info" value="2" />
+                    <Tab label="Additional Info" value="3" />
+                  </TabList>
+                </Box>
+                <Box maxWidth="md" sx={{ margin: "30px auto", boxShadow: 3, backgroundColor: "var(--darkwhite)" }}>
+                  <TabPanel value="1">
+                    <Personalnfo candidateInfo={candidateInfo} setCandidateInfo={setCandidateInfo} value={value} setValue={setValue} />
+                  </TabPanel>
+                  <TabPanel value="2">
+                    <EducationalInfo candidateInfo={candidateInfo} setCandidateInfo={setCandidateInfo} value={value} setValue={setValue} />
+                  </TabPanel>
+                  <TabPanel value="3">
+                    <AdditionalInfo candidateInfo={candidateInfo} setCandidateInfo={setCandidateInfo} value={value} setValue={setValue} />
+                  </TabPanel>
+                </Box>
+              </TabContext>
+            </ThemeProvider>
+          </Box>
+        </form>
+      </div>
+      }
+      
     </div>
   );
 }
 
 export default CandidateONboarding;
 
-//name *
-//email*
-//phone*
-// education
-// experience
-// social media url eg linkedIN , github , twitter
-//intrested domain eg- forented, backend, fullstack, devops, mobile, data science, ml, ai, Marketing, sales, HR, finance, operations, product, design, content, legal, customer support, other
-// skills * min 2

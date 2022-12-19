@@ -1,255 +1,126 @@
 import React from "react";
-import Container from "@mui/material/Container";
-import "./index.css";
-import { TextField, Grid,Button } from "@mui/material";
 import { setDoc, doc } from "firebase/firestore";
 import { db } from "../../../config/firebaseInitisize";
 import { useNavigate } from "react-router-dom";
+import Navbar from "../../common/NavBar";
+import Tab from '@mui/material/Tab';
+import TabContext from '@mui/lab/TabContext';
+import TabList from '@mui/lab/TabList';
+import TabPanel from '@mui/lab/TabPanel';
+import { createTheme, ThemeProvider } from "@mui/material";
+import Loding from "../../common/Loding/Loding";
+import { Box } from "@mui/system";
+import CompanyInfo from "./CompanyInfo";
+import AdditionalInfo from "./AdditionalInfo";
 
 function ClientOnboarding() {
   const navigate = useNavigate();
-  const loggedInUser = JSON.parse(localStorage.getItem("user"));
+  const loggedInUser = JSON.parse(localStorage.getItem("userInfo"));
   const [clientInfo, setClientInfo] = React.useState({
-    name: "",
+    HRname: "",
     email: loggedInUser.email,
-    phone: "",
-    company: "",
+    Contactphone: "",
+    companyName: "",
     location: "",
+    Country: "",
     website: "",
+    aboutComapny:"",
+    Type:"",
+    Size:"",
+    Headquaters:"",
+    Branches:"",
     socialMedia: { linkedIn: "" },
   });
+  const [value, setValue] = React.useState('1');
+  const [loding, setLoding] = React.useState(false);
+
+  
+  const theme = createTheme({
+    palette: {
+      primary: {
+        main: "#3a80e9",
+      },
+    },
+  });
+  const handleChange = (event, newValue) => {
+    setValue(newValue);
+  };
 
   const submitInfo = async (e) => {
-    let userData = JSON.parse(localStorage.getItem("user"));
-    let userId = userData.uid;
+    setLoding(true);
+    let userData = JSON.parse(localStorage.getItem("userInfo"));
+    let userId = userData.UserId;
     e.preventDefault();
     console.log(clientInfo);
     const finaInfo = {
       ...clientInfo,
       userId: userId,
       step: 2,
-      user_type: "client",
+      user_type:userData.type 
     };
     try {
        await setDoc(doc(db, "usersData", userId), {
         ...finaInfo,
       });
-      localStorage.setItem(
-        "user",
-        JSON.stringify({ ...userData, userInfo: { ...finaInfo } })
-      );
-        setTimeout(() => {
-          navigate("/client/profile");
-        }, 2000);
-
+      console.log("value saved");
+      setLoding(false)
+      navigate("/client/profile");
     } catch (e) {
-      alert("Error occored");
+      alert("Somthing is wrong please!try again");
+      setLoding(false);
       console.error("Error adding document: ", e);
     }
 
     setClientInfo({
-      name: "",
-      email: "",
-      phone: "",
-      company: "",
+      HRname: "",
+      email: loggedInUser.email,
+      Contactphone: "",
+      companyName: "",
       location: "",
+      Country: "",
       website: "",
+      aboutComapny:"",
+      Type:"",
+      Size:"",
+      Headquaters:"",
+      Branches:"",
+      socialMedia: { linkedIn: "" },
     });
   };
   return (
     <div className="main-container">
-      <Container
-        maxWidth="md"
-        sx={{
-          backgroundColor: "#FFFAFA",
-          boxShadow: "0px 0px 15px #DCD7D7",
-          padding: "90px 10px",
-          borderRadius: "20px",
-        }}
-      >
-        <h2 className="heading"> SetUp your client profile</h2>
-        <form onSubmit={submitInfo}>
-          <Grid
-            container
-            spacing={5}
-            maxWidth="80%"
-            p={4}
-            sx={{
-              backgroundColor: "#FFFFFF",
-              boxShadow: "0px 0px 15px #DCD7D7",
-              margin: "auto",
-              fontSize: "15px",
-            }}
-          >
-            {/* ----------------------------------------------------- */}
-            {/* /neame*
-          //email*
-          //phone*
-          //location*
-          //company
-          //website */}
-
-            <Grid item md={6} xs={12}>
-              <label>Company Name*</label>
-              <TextField
-                fullWidth
-                id="outlined-basic"
-                label="Company Name"
-                variant="outlined"
-                size="small"
-                required
-                value={clientInfo.companyName}
-                onChange={(e) => {
-                  setClientInfo((p) => {
-                    return { ...p, companyName: e.target.value };
-                  });
-                }}
-              />
-            </Grid>
-            {/* ----------------------------------------------------- */}
-
-            <Grid item md={6} xs={12}>
-              <label>Phone Number*</label>
-              <TextField
-                fullWidth
-                id="outlined-basic"
-                type="number"
-                variant="outlined"
-                size="small"
-                required
-                value={clientInfo.phone}
-                onChange={(e) => {
-                  setClientInfo((p) => {
-                    return { ...p, phone: e.target.value };
-                  });
-                }}
-              />
-            </Grid>
-            {/* ----------------------------------------------------- */}
-            <Grid item lg={6} md={6} xs={12}>
-              <label>Your Name*</label>
-              <TextField
-                fullWidth
-                id="outlined-basic"
-                label="Write your name"
-                variant="outlined"
-                size="small"
-                required
-                value={clientInfo.name}
-                onChange={(e) => {
-                  setClientInfo((p) => {
-                    return { ...p, name: e.target.value };
-                  });
-                }}
-              />
-            </Grid>
-            {/* ----------------------------------------------------- */}
-            <Grid item lg={6} md={6} xs={12}>
-              <label>Email*</label>
-              <TextField
-                fullWidth
-                disabled
-                id="outlined-basic"
-                placeholder="Contact@gmail.com"
-                variant="outlined"
-                size="small"
-                type="email"
-                required
-                value={clientInfo.email}
-                onChange={(e) => {
-                  setClientInfo((p) => {
-                    return { ...p, email: e.target.value };
-                  });
-                }}
-              />
-            </Grid>
-            {/* ------------------------------------------------------- */}
-
-            <Grid item lg={6} md={6} xs={12}>
-              <label>Location*</label>
-              <TextField
-                fullWidth
-                id="outlined-basic"
-                label="Type your company address"
-                variant="outlined"
-                size="small"
-                required
-                value={clientInfo.location}
-                onChange={(e) => {
-                  setClientInfo((p) => {
-                    return { ...p, location: e.target.value };
-                  });
-                }}
-              />
-            </Grid>
-            {/* ----------------------------------------------------- */}
-            <Grid item lg={6} md={6} xs={12}>
-              <label>Website*</label>
-              <TextField
-                fullWidth
-                id="outlined-basic"
-                label="url"
-                variant="outlined"
-                size="small"
-                required
-                value={clientInfo.website}
-                onChange={(e) => {
-                  setClientInfo((p) => {
-                    return { ...p, website: e.target.value };
-                  });
-                }}
-              />
-            </Grid>
-            {/* ------------------------------------------------------- */}
-            <Grid item lg={6} md={6} xs={12}>
-              <label>Linkedin</label>
-              <TextField
-                fullWidth
-                id="outlined-basic"
-                label="url"
-                variant="outlined"
-                size="small"
-                value={clientInfo.socialMedia.linkedIn}
-                onChange={(e) => {
-                  setClientInfo((p) => {
-                    return {
-                      ...p,
-                      socialMedia: {
-                        ...p.socialMedia,
-                        linkedIn: e.target.value,
-                      },
-                    };
-                  });
-                }}
-              />
-            </Grid>
-            {/* ------------------------------------------------------- */}
-
-            {/* ------------------------------------------------------- */}
-            <Grid item lg={12}>
-              <Button
-                variant="contained"
-                color="secondary"
-                size="small"
-                type="submit"
-                sx={{ float: "right", width: "150px" }}
-              >
-                Complete Setup
-              </Button>
-            </Grid>
-            {/* ------------------------------------------------------- */}
-          </Grid>
+      <Navbar/>
+      {
+        loding?
+        <Loding/>:
+        <div>
+        <form onSubmit={(e) => submitInfo(e)}>
+          <Box sx={{ width: '100%', typography: 'body1' }}>
+            <ThemeProvider theme={theme}>
+              <TabContext value={value}>
+                <Box sx={{ borderBottom: 1, borderColor: 'divider', margin: "15px auto" }}>
+                  <TabList onChange={handleChange} variant="fullWidth">
+                    <Tab label="ComaPany Info" value="1" />
+                    <Tab label="Additional Info" value="2" />
+                  </TabList>
+                </Box>
+                <Box maxWidth="md" sx={{ margin: "30px auto", boxShadow: 3, backgroundColor: "var(--darkwhite)" }}>
+                  <TabPanel value="1">
+                   <CompanyInfo clientInfo={clientInfo} setClientInfo={setClientInfo} value={value} setValue={setValue} />
+                  </TabPanel>
+                  <TabPanel value="2">
+                    <AdditionalInfo clientInfo={clientInfo} setClientInfo={setClientInfo} value={value} setValue={setValue}/>
+                  </TabPanel>
+                </Box>
+              </TabContext>
+            </ThemeProvider>
+          </Box>
         </form>
-      </Container>
+      </div>
+      }
     </div>
   );
 }
 
 export default ClientOnboarding;
 
-//neame*
-//email*
-//phone*
-//location*
-//company
-//website

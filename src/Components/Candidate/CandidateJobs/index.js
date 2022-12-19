@@ -4,7 +4,6 @@ import JobSearch from "./JobSearch";
 import {
   collection,
   query,
-  where,
   getDocs,
   onSnapshot,
   setDoc,
@@ -13,6 +12,10 @@ import {
 import { db } from "../../../config/firebaseInitisize";
 import JobInfoModal from "./JobInfoModal";
 import uuid from "uuidv4";
+import Navbar from "../../common/NavBar";
+import { Box } from "@mui/material";
+import Loding from "../../common/Loding/Loding";
+import CandidateHOC from "../../HOC/CandidateHOC";
 
 function CandidateJobs() {
   const [openModal, setOpenModal] = useState(false);
@@ -38,45 +41,54 @@ function CandidateJobs() {
   }, []);
 
   const applyOnJob = async (job) => {
+    console.log("Modal job",job)
     const application_id = uuid();
-    const loggedInUser = JSON.parse(localStorage.getItem("user"));
+    const loggedInUser = JSON.parse(localStorage.getItem("userInfo"));
     await setDoc(doc(db, "applications", application_id), {
       job_id: job.job_id,
       application_id,
       createdAt: new Date(),
       client_id: job.client_id,
       interest_showen: "candidate",
-      job_title: job?.title ? job.title : "title",
-      client_name: job?.client_name ? job.client_name : "client",
-      candidate_name: loggedInUser?.displayName
-        ? loggedInUser.displayName
+      job_title: job?.domain ? job.domain : "title",
+      qualification:job.qualification,
+      experience:job.experience,
+      client_name: job?.companyname ? job.companyname : "companyname",
+      candidate_name: loggedInUser?.email
+        ? loggedInUser.email
         : "candidate",
-      candidate_id: loggedInUser?.uid ? loggedInUser.uid : "candidate",
-      project_bugdet: job?.budget ? job.budget : "budget",
-    });  
+      candidate_id: loggedInUser?.UserId ? loggedInUser.UserId : "candidate",
+      project_bugdet: job?.size ? job.size : "size",
+    });
   };
   return (
-    <div>
-      <JobSearch filter={filter} setFilter={setFilter} />
-      {allJobs && allJobs.length === 0 ? (
-        <div>no job :(</div>
-      ) : allJobs && allJobs.length > 0 ? (
-        <div>
-          {allJobs.map((item) => {
-            return (
-              <JobCard
-                applyOnJob={applyOnJob}
-                setOpenModal={setOpenModal}
-                setModalData={setModalData}
-                key={item.job_id}
-                job={item}
-              />
-            );
-          })}
-        </div>
-      ) : (
-        <div>loading</div>
-      )}
+    <div> 
+      <Navbar />
+      <CandidateHOC/>
+      <Box maxWidth="md" sx={{margin:"30px auto"}}>
+        <JobSearch filter={filter} setFilter={setFilter} />
+        {allJobs && allJobs.length === 0 ? (
+          <div>no job :</div>
+        ) : allJobs && allJobs.length > 0 ? (
+          <div>
+            {allJobs.map((item) => {
+              return (
+                <JobCard
+                  applyOnJob={applyOnJob}
+                  setOpenModal={setOpenModal}
+                  setModalData={setModalData}
+                  key={item.job_id}
+                  job={item}
+                />
+              );
+            })}
+          </div>
+        ) : (
+          <div><Loding/></div>
+        )}
+
+      </Box>
+
       <JobInfoModal
         applyOnJob={applyOnJob}
         ModalData={ModalData}

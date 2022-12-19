@@ -1,4 +1,7 @@
 import React, { useEffect } from "react";
+import Search from "../../../assets/svgFile/search.svg";
+import {  TextField } from "@mui/material";
+import Loding from "../../common/Loding/Loding";
 
 function CandidateConversationSideBar({
   candidateConversation,
@@ -12,20 +15,53 @@ function CandidateConversationSideBar({
 
   return (
     <div>
+       <TextField
+        placeholder="Search title or keywoard"
+        sx={{
+          border: "none",
+          outline: "none",
+          width: "100%",
+
+          "& .css-1q6at85-MuiInputBase-root-MuiOutlinedInput-root": {
+            "& fieldset": {
+              border: "none",
+            },
+          },
+        }}
+        size="small"
+        id="outlined-basic"
+        variant="outlined"
+        InputProps={{
+          startAdornment: (
+            <img
+              src={Search}
+              alt="Search"
+              style={{
+                marginRight: "10px",
+                maxWidth: "20px",
+                width: { xs: "10%", md: "100%" },
+                maxHeight: "20px",
+                height: { xs: "10%", md: "100%" },
+              }}
+            />
+          ),
+        }}
+      />
+
       {!allConversations ? (
-        <div>laoding</div>
+        <div><Loding/></div>
       ) : allConversations && allConversations.length === 0 ? (
-        <div>nodata</div>
+        <div>You do not have any conversion</div>
       ) : allConversations && allConversations.length > 0 ? (
-        <div>
+        <div >
           {allConversations.map((conversation) => {
-            return (
+            return ( 
               <div
               onClick={() => {setSelectedConversation(conversation);setConversationMobileSidebar(false)}}
-              style={{border:"0.5px solid rgb(137, 139, 140)", borderRadius:"25px",margin:"10px",padding:"10px"}}
+              style={{boxShadow:"0px 0px 3px var(--black)",margin:"10px",padding:"10px",maxHeight:"70px",overflow:"hidden"}}
               >
-                <div style={{color:"#740EB8"}}><h4>{conversation.client_name}</h4></div>
-                <div style={{marginLeft:"10px"}}><p>{conversation.last_message}</p></div>
+                <div style={{color:"var(--blue)",fontWeight:"600"}}>{conversation.client_name}</div>
+                <div style={{marginLeft:"10px"}}>{conversation.last_message}</div>
               </div>
             );
           })}

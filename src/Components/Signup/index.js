@@ -12,7 +12,7 @@ import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import GoogleIcon from '@mui/icons-material/Google';
 import background from "./images/background.png"
 
-function Signup({ type }) {
+function Signup1({ type }) {
   let navigate = useNavigate();
   const provider = new GoogleAuthProvider();
   console.log(type);
@@ -148,4 +148,77 @@ function Signup({ type }) {
     )
 }
 
-export default Signup;
+export default Signup1;
+{/* <Grid container spacing={3} sx={{width:"100%",border:"1px solid yellow"}}>
+      
+           
+            
+
+            
+
+           
+
+
+           
+            <Grid item xs={12} md={6}>
+              <label>Twitter</label>
+              <TextField
+                value={candidateInfo.socialMedia.twitter}
+                onChange={(e) => {
+                  setCandidateInfo((p) => {
+                    return {
+                      ...p,
+                      socialMedia: {
+                        ...p.socialMedia,
+                        twitter: e.target.value,
+                      },
+                    };
+                  });
+                }}
+                size="small"
+                fullWidth
+                id="outlined-basic"
+                variant="outlined"
+              />
+            </Grid>
+
+        
+            <Grid item xs={12} md={6}>
+              <label>Instagram</label>
+              <TextField
+                value={candidateInfo.socialMedia.instagram}
+                onChange={(e) => {
+                  setCandidateInfo((p) => {
+                    return {
+                      ...p,
+                      socialMedia: {
+                        ...p.socialMedia,
+                        instagram: e.target.value,
+                      },
+                    };
+                  });
+                }}
+                size="small"
+                fullWidth
+                id="outlined-basic"
+                variant="outlined"
+              />
+            </Grid>
+
+            
+
+            
+
+            <Grid item lg={12}>
+              <Button
+                variant="contained"
+                color="secondary"
+                size="small"
+                type="submit"
+                sx={{ float: "right", width: "150px" }}
+              >
+                Submit
+              </Button>
+            </Grid>
+            ----------------------------------------------------------
+          </Grid> */}

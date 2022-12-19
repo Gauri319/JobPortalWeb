@@ -7,6 +7,8 @@ import {
   setDoc,
   doc,
 } from "firebase/firestore";
+import CandidateHOC from "../../HOC/CandidateHOC";
+import Navbar from "../../common/NavBar";
 import { db } from "../../../config/firebaseInitisize";
 import uuid from "uuidv4";
 import MessageArea from "../../common/MessageArea";
@@ -20,8 +22,8 @@ function CandidateConversation() {
   const [allMessages, setAllMessages] = useState([]);
 
   function candidateConversation() {
-    const loggedInUser = JSON.parse(localStorage.getItem("user"));
-    const candidateId = loggedInUser.uid;
+    const loggedInUser = JSON.parse(localStorage.getItem("userInfo"));
+    const candidateId = loggedInUser.UserId;
     try {
       const q = query(
         collection(db, "conversations"),
@@ -57,8 +59,8 @@ function CandidateConversation() {
   };
 
   const onSendMessage = async (messagetext) => {
-    const loggedInUser = JSON.parse(localStorage.getItem("user"));
-    const candidateId = loggedInUser.uid;
+    const loggedInUser = JSON.parse(localStorage.getItem("userInfo"));
+    const candidateId = loggedInUser.UserId;
     const message_id = uuid();
     const message = {
       message_id: message_id,
@@ -71,65 +73,69 @@ function CandidateConversation() {
     await setDoc(doc(db, "one-to-one", message_id), message);
   }
   return (
-    <Grid container spacing={2}>
-      <Grid
-        item
-        xs={12}
-        md={5}
-        sx={{
-          display: {
-            xs: conversationMobileSidebar ? "block" : "none",
-            md: "block",
-          },
-          borderRight:"0.5px solid rgb(137, 139, 140)"
-        }}
-      >
-        <CandidateConversationSideBar
-        setConversationMobileSidebar={setConversationMobileSidebar}
-          candidateConversation={candidateConversation}
-          allConversations={allConversations}
-          setSelectedConversation={setSelectedConversation}
-        />
-      </Grid>
-      <Grid
-        item
-        xs={12}
-        md={7}
-        sx={{
-          display: {
-            xs: conversationMobileSidebar ? "none" : "block",
-            md: "block",
-          },
-        }}
-      >
+    <div>
+       <Navbar/>
+      <CandidateHOC/>
+      <Grid container spacing={2} maxWidth="md" sx={{margin:"10px auto"}}>
         <Grid
+          item
+          xs={12}
+          md={4}
           sx={{
             display: {
-              xs: "block",
-              md: "none",
-              backgroundColor: "#fff",
+              xs: conversationMobileSidebar ? "block" : "none",
+              md: "block",
+            },
+            borderRight: "0.5px solid rgb(137, 139, 140)"
+          }}
+        >
+          <CandidateConversationSideBar
+            setConversationMobileSidebar={setConversationMobileSidebar}
+            candidateConversation={candidateConversation}
+            allConversations={allConversations}
+            setSelectedConversation={setSelectedConversation}
+          />
+        </Grid>
+        <Grid
+          item
+          xs={12}
+          md={8}
+          sx={{
+            display: {
+              xs: conversationMobileSidebar ? "none" : "block",
+              md: "block",
             },
           }}
         >
-          <Button
-          sx={{
-            position:'fixed',
-            top:0,
-            backgroundColor: "#fff",
-          }}
-          onClick={() => setConversationMobileSidebar(true)}>
-            Back
-          </Button>
+          <Grid
+            sx={{
+              display: {
+                xs: "block",
+                md: "none",
+                backgroundColor: "#fff",
+              },
+            }}
+          >
+            <Button
+              sx={{
+                position: 'fixed',
+                top: 0,
+                backgroundColor: "#fff",
+              }}
+              onClick={() => setConversationMobileSidebar(true)}>
+              Back
+            </Button>
+          </Grid>
+          <MessageArea
+            onSendMessage={onSendMessage}
+            allMessages={allMessages}
+
+            fetchAllOneToOneMessages={fetchAllOneToOneMessages}
+            selectedConversation={selectedConversation}
+          />
         </Grid>
-        <MessageArea
-           onSendMessage={onSendMessage}
-          allMessages={allMessages}
-          
-          fetchAllOneToOneMessages={fetchAllOneToOneMessages}
-          selectedConversation={selectedConversation}
-        />
       </Grid>
-    </Grid>
+    </div>
   );
 }
 

@@ -2,19 +2,24 @@ import React, { useState } from "react";
 import { Button, Grid } from "@mui/material";
 import JobForm from "./JobForm";
 import SideBar from "./SideBar";
+import Navbar from "../../common/NavBar";
+import ClientHOC from "../../HOC/ClientHOC";
 
 function PostJob() {
   const [mobileStep, setMobileStep] = useState(true);
   return (
     <div>
-      <Grid container spacing={2}>
+      <Navbar/> 
+      <ClientHOC/>
+      <Grid maxWidth="md" container spacing={2} sx={{margin:"30px auto",boxShadow:"3"}}>
         <Grid
+          item
+          xs={12} 
           sx={{
             display: { xs: "flex", sm: "none" },
             justifyContent: "center",
             alignItems: "center",
           }}
-          xs={12}
         >
           <Button onClick={() => setMobileStep((p) => !p)}>{mobileStep?"Add new Job":"back"}</Button>
         </Grid>

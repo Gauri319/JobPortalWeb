@@ -11,7 +11,7 @@ import { Button } from "@mui/material";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
-    backgroundColor: theme.palette.common.black,
+    backgroundColor: theme.palette.common.blue,
     color: theme.palette.common.white,
   },
   [`&.${tableCellClasses.body}`]: {
@@ -43,11 +43,12 @@ const Date = (date) => {
   return `${filteredDay} ${filteredMonth} ${filteredDate} ${filteredYear}`;
 };
 function ApplicationTable({ columns, rows, buttons, handleAction }) {
+  console.log("Rows>>",rows);
   return (
     <TableContainer component={Paper}>
-      <Table sx={{ minWidth: 700 }} aria-label="customized table">
+      <Table  aria-label="customized table">
         <TableHead>
-          <TableRow align="center">
+          <TableRow align="center" sx={{backgroundColor:"var(--blue)"}}>
             {columns.map((column) => {
               return <StyledTableCell>{column.label}</StyledTableCell>;
             })}
@@ -58,7 +59,6 @@ function ApplicationTable({ columns, rows, buttons, handleAction }) {
           {rows.map((row) => (
             <StyledTableRow key={row.application_id}>
               {columns.map((column) => {
-                console.log(column.key);
                 return (
                   <StyledTableCell align="left">
                     {column.key === "createdAt"
@@ -79,9 +79,12 @@ function ApplicationTable({ columns, rows, buttons, handleAction }) {
                 >
                   <Button
                     sx={{
-                      backgroundColor: "green",
+                       backgroundColor: "green",
+                      "&:hover": {
+                        backgroundColor: "#28DA6F",
+                      },
+                      margin:"3px 10px",
                       color: "#fff",
-                      marginRight: "10px",
                     }}
                     onClick={() => handleAction("accept", row)}
                   >
@@ -90,7 +93,11 @@ function ApplicationTable({ columns, rows, buttons, handleAction }) {
                   <Button
                     onClick={() => handleAction("reject", row)}
                     sx={{
-                      backgroundColor: "#f50057",
+                      backgroundColor: "#F41717",
+                      margin:"3px 10px",
+                      "&:hover": {
+                        backgroundColor: "#EE7171",
+                      },
                       color: "#fff",
                     }}
                   >

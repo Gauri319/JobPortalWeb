@@ -9,11 +9,11 @@ import {
 } from "firebase/firestore";
 import { db } from "../../../config/firebaseInitisize";
 import Search from "../../../assets/svgFile/search.svg";
-import { Input, TextField, Grid } from "@mui/material";
+import {  TextField } from "@mui/material";
 function SideBar() {
   const [allJobs, setAllJobs] = useState([]);
-  let loggedInUser = JSON.parse(localStorage.getItem("user"));
-  let clientId = loggedInUser.uid;
+  let loggedInUser = JSON.parse(localStorage.getItem("userInfo"));
+  let clientId = loggedInUser.UserId;
 
 
   const fetchAllJobs = async () => {
@@ -41,7 +41,7 @@ function SideBar() {
           border: "none",
           outline: "none",
           width: "100%",
-
+           
           "& .css-1q6at85-MuiInputBase-root-MuiOutlinedInput-root": {
             "& fieldset": {
               border: "none",
@@ -69,20 +69,20 @@ function SideBar() {
       />
 
       {allJobs && allJobs.length === 0 ? (
-        <div>no data</div>
+        <div>You are Not Post Any job</div>
       ) : allJobs && allJobs.length > 0 ? (
         /**=================================== */
         <div className="column">
-          {allJobs.map((job) => {
+          {
+          allJobs.map((job,i) => {
             return (
-              <div className="card">
+              <div className="card" key={i}>
                 
                 <h3>
-                  {job.title}
+                  {job.domain}
                 </h3>
-                <p>
-                  {job.description}
-                </p>
+                <h6>{job.companyname}</h6>
+                <p>{job.city}</p>
                 
               </div>
             );

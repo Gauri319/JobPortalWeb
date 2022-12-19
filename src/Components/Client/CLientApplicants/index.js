@@ -8,13 +8,17 @@ import {
   setDoc,
   deleteDoc,
 } from "firebase/firestore";
+import Navbar from "../../common/NavBar";
+import Loding from "../../common/Loding/Loding";
 import uuid from "uuidv4";
 import { db } from "../../../config/firebaseInitisize";
 import ApplicationTable from "../../common/ApplicationTable";
+import ClientHOC from "../../HOC/ClientHOC";
+import { Box } from "@mui/material";
 function CLientApplicants() {
   const [applications, setAllApplications] = React.useState(null);
-  const loggedInUser = JSON.parse(localStorage.getItem("user"));
-  const clientId = loggedInUser.uid;
+  const loggedInUser = JSON.parse(localStorage.getItem("userInfo"));
+  const clientId = loggedInUser.UserId;
   const fetchAllApplications = async () => {
     try {
       const q = query(
@@ -84,11 +88,11 @@ function CLientApplicants() {
 
         applications.forEach((application) => {
           if (application.application_id === Applicationdata.application_id) {
-            let temp = { ...application,interest_showen:'accepted' };
+            let temp = { ...application, interest_showen: 'accepted' };
             changedData.push(temp);
           }
-          else{
-          changedData.push(application);
+          else {
+            changedData.push(application);
           }
         });
         console.log(changedData)
@@ -101,26 +105,31 @@ function CLientApplicants() {
 
   return (
     <div>
-      {applications && applications.length === 0 ? (
-        <div>no applications</div>
-      ) : applications && applications.length > 0 ? (
-        <div>
-          <ApplicationTable
-            handleAction={handleAction}
-            buttons={true}
-            columns={[
-              { label: "Candidate Name", key: "candidate_name" },
-              { label: "Job Title", key: "job_title" },
-              { label: "Budget", key: "project_bugdet" },
-              { label: "Status", key: "interest_showen" },
-              { label: "date", key: "createdAt" },
-            ]}
-            rows={applications}
-          />
-        </div>
-      ) : (
-        <div>loading</div>
-      )}
+      <Navbar />
+      <ClientHOC />
+      <Box maxWidth="md" sx={{margin:"10px auto"}}>
+        {applications && applications.length === 0 ? (
+          <div><h2>No any applications</h2></div>
+        ) : applications && applications.length > 0 ? (
+          <div>
+            <ApplicationTable
+              handleAction={handleAction}
+              buttons={true}
+              columns={[
+                { label: "Candidate Name", key: "candidate_name" },
+                { label: "Job Title", key: "job_title" },
+                { label: "Qualification", key: "qualification" },
+                { label: "Experience", key: "experience" },
+                { label: "Status", key: "interest_showen" },
+                { label: "date", key: "createdAt" },
+              ]}
+              rows={applications}
+            />
+          </div>
+        ) : (
+          <div><Loding /></div>
+        )}
+      </Box>
     </div>
   );
 }
