@@ -120,7 +120,7 @@ function Sign({ authentication, type, message }) {
                             <Grid container
                                 justifyContent="center"
                                 alignItems="center"
-                                rowSpacing={2}
+                                rowSpacing={1}
                                 sx={
                                     {
                                         width: { md: "70%", xs: "100%" },
@@ -138,7 +138,7 @@ function Sign({ authentication, type, message }) {
                                     <p style={{ fontSize: "15px", color: "var(--darkgrey)" }}>{message}please Enter your details to get {authentication} your Account</p>
                                 </Grid>
                                 <Grid item xs={12}>
-                                    <AccountCircleIcon sx={{ fontSize: "150px", color: "var(--grey)" }} />
+                                    <AccountCircleIcon sx={{ fontSize: "130px", color: "var(--grey)" }} />
                                 </Grid>
                                 <Grid item xs={12}>
                                     <TextField fullWidth id="standard-basic" type="text" label="Username" variant="standard" size="small" value={email} onChange={(e) => { setEmail(e.target.value) }} />
