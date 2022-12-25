@@ -25,21 +25,24 @@ function CandidateJobs() {
     selectedSkills: [],
   });
   const [allJobs, setAllJobs] = useState(null);
+  const [filterd, setFiltered] = useState(null);
   const fetchAllJobs = async () => {
     const q = query(collection(db, "jobs"));
-
     const querySnapshot = await getDocs(q);
     let jobs = [];
     querySnapshot.forEach((doc) => {
       // doc.data() is never undefined for query doc snapshots
-      jobs.push(doc.data());
+      if(doc.data().domain!=filter.selectedDomain){
+        jobs.push(doc.data());
+       }
     });
     setAllJobs(jobs);
   };
   useEffect(() => {
     fetchAllJobs();
-  }, []);
-
+  }, [filter.selectedDomain]);
+  
+  console.log("fil>>>",filterd);
   const applyOnJob = async (job) => {
     console.log("Modal job",job)
     const application_id = uuid();
@@ -66,7 +69,21 @@ function CandidateJobs() {
       <Navbar />
       <CandidateHOC/>
       <Box maxWidth="md" sx={{margin:"30px auto"}}>
-        <JobSearch filter={filter} setFilter={setFilter} />
+        <JobSearch filter={filter} setFilter={setFilter} setFiltered={setFiltered} />
+        {
+          filterd&&filterd.length>0?
+          filterd.map((item) => {
+            return (
+              <JobCard
+                applyOnJob={applyOnJob}
+                setOpenModal={setOpenModal}
+                setModalData={setModalData}
+                key={item.job_id}
+                job={item}
+              />
+            ); 
+          }):""
+        }
         {allJobs && allJobs.length === 0 ? (
           <div>no job :</div>
         ) : allJobs && allJobs.length > 0 ? (

@@ -11,6 +11,16 @@ import {
   Checkbox,
   Select,
 } from "@mui/material";
+import {
+  collection,
+  query,
+  getDocs,
+  onSnapshot,
+  setDoc,
+  doc,
+} from "firebase/firestore";
+import { db } from "../../../config/firebaseInitisize";
+import { useEffect } from "react";
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
 const MenuProps = {
@@ -22,7 +32,26 @@ const MenuProps = {
   },
 };
 
-function JobSearch({ filter, setFilter }) {
+
+function JobSearch({ filter, setFilter,setFiltered }) {
+  const fetchAllJobs = async () => {
+    const q = query(collection(db, "jobs"));
+    const querySnapshot = await getDocs(q);
+    let jobs = [];
+    querySnapshot.forEach((doc) => {
+      // doc.data() is never undefined for query doc snapshots
+      if(filter.selectedDomain!=null){
+         if(doc.data().domain===filter.selectedDomain){
+         
+          jobs.push(doc.data());
+         }
+      }
+    });
+    setFiltered(jobs);
+  };
+  useEffect(() => {
+    fetchAllJobs();
+  }, [filter.selectedDomain]);
   const handleSkillsChange = (event) => {
     const {
       target: { value },
@@ -69,7 +98,7 @@ function JobSearch({ filter, setFilter }) {
               value={filter.selectedSkills}
               onChange={handleSkillsChange}
               input={<OutlinedInput label="Tag" />}
-              renderValue={(selected) => selected.join(", ")}
+              renderValue={(selected) => selected.join(",")}
               MenuProps={MenuProps}
             >
               {skillsList.map((name) => (
@@ -77,7 +106,7 @@ function JobSearch({ filter, setFilter }) {
                   <Checkbox
                     checked={filter.selectedSkills.indexOf(name) > -1}
                   />
-                  <ListItemText primary={name} />
+                  <ListItemText primary={name}  />
                 </MenuItem>
               ))}
             </Select>

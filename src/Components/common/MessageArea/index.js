@@ -15,6 +15,7 @@ function MessageArea({
     }
   }, [selectedConversation]);
 
+  console.log(allMessages);
   const checkType = (message) => {
     if (message.sender_id === loggedId) {
       if (message.sender_role === "candidate") {
